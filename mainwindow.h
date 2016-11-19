@@ -22,10 +22,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 public Q_SLOTS:
     // File checking
     void onLoadFinished(bool);
-    void onFileChanged(QJsonObject);
+    void onFileChanged(QJsonObject, int);
     void onFileSize(float);
     void onRamUpdate(int);
 
@@ -39,9 +40,14 @@ private slots:
 
     void on_comboBox_currentTextChanged(const QString &arg1);
 
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainWindow *ui;
      void loadFiles(QString directory = QDir::currentPath());
+     void initValues();
 };
 
 #endif // MAINWINDOW_H

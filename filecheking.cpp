@@ -1,6 +1,6 @@
 #include "FileCheking.h"
 #include <QtCore>
-
+#include <QApplication>
 QString FileName;
 void delay(int wait);
 
@@ -20,13 +20,13 @@ FileCheking::FileCheking(QObject *parent) :
 
 void  FileCheking::run()
 {
+
     QFile file;
     file.setFileName("data/"+FileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     settings = file.readAll();
-
     file.close();
-
+    int count=0;
 
     QJsonDocument doc = QJsonDocument::fromJson(settings.toUtf8());
     QJsonObject obj = doc.object();
@@ -40,11 +40,14 @@ void  FileCheking::run()
 
     foreach (const QJsonValue & value, jsonArray) {
 
-        delay(1);
+        QCoreApplication::processEvents();
+        delay(0.1);
         QJsonArray jsonArray2 = value.toArray();
         QJsonObject obj = value.toObject();
-        Q_EMIT CheckingThisFile(obj);
-
+        Q_EMIT CheckingThisFile(obj, count);
+        count++;
+       // this->msleep(1);
+       // delay(1);
     }
 
 

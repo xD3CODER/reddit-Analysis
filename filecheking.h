@@ -20,10 +20,9 @@ public:
     void run();
     bool Stop;
 
-
 Q_SIGNALS:
     void loadFinished(bool);
-    void CheckingThisFile(QJsonObject);
+    void CheckingThisFile(QJsonObject, int);
     void FileSize(float);
 
 };
