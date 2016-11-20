@@ -4,14 +4,16 @@
 #include <QObject>
 #include <QThread>
 #include <QString>
-#include <qjsondocument.h>
-#include<qjsonobject.h>
-#include<qjsonarray.h>
-#include <qfile.h>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include<QJsonArray>
+#include <QFile>
+
 //#define DEBUG
 
 extern QString FileName;
 
+extern float loadedData;
 class FileCheking : public QThread
 {
     Q_OBJECT
@@ -22,7 +24,7 @@ public:
 
 Q_SIGNALS:
     void loadFinished(bool);
-    void CheckingThisFile(QJsonObject, int);
+    void CheckingThisFile(QJsonObject, int, float);
     void FileSize(float);
 
 };

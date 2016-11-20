@@ -4,7 +4,8 @@
 #include <QtCore>
 #include <QTime>
 #include <QtCore>
-
+#include <list.h>
+#include <QMessageBox>
 
 Utils::Utils(QObject *parent) :
     QThread(parent)
@@ -31,3 +32,26 @@ void Utils::run(){
         Q_EMIT ramUsage(statex.dwMemoryLoad);
     }
 }
+
+
+void Utils::SearchString(QString data)
+{
+
+    QString result;
+    QMessageBox msgBox;
+    Node *o = list->head;
+    int counter = 0;
+    while (o!= NULL) {
+        if (o->data["body"].toString().toLower().contains(data.toLower()))
+        {
+            counter++;
+            result.append(QString::number(counter)+")"+o->data["body"].toString() +"\n*******************");
+        }
+
+        o = o->next;
+    }
+
+     msgBox.setText("Le mot "+ data +" est utilisé " + QString::number(counter)+ " fois");
+     msgBox.exec();
+}
+

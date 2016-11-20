@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1126</width>
-    <height>687</height>
+    <height>778</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,11 +24,11 @@
      <rect>
       <x>10</x>
       <y>630</y>
-      <width>1101</width>
-      <height>51</height>
+      <width>1111</width>
+      <height>137</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1,1,0">
+    <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1">
      <property name="sizeConstraint">
       <enum>QLayout::SetMaximumSize</enum>
      </property>
@@ -159,123 +159,219 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>1101</width>
+      <y>30</y>
+      <width>1111</width>
       <height>591</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="3">
-      <widget class="QPushButton" name="pushButton_4">
-       <property name="text">
-        <string>RLD</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PrintData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QComboBox" name="comboBox">
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentText">
-        <string notr="true">Sélectionnez un fichier</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>Sélectionnez un fichier</string>
-        </property>
+    <property name="currentIndex">
+     <number>2</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Tab 1</string>
+     </attribute>
+     <widget class="QWidget" name="gridLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1081</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="2">
+        <widget class="QComboBox" name="comboBox">
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentText">
+          <string notr="true">Sélectionnez un fichier</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Sélectionnez un fichier</string>
+          </property>
+         </item>
+        </widget>
        </item>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="pushButton_5">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>PrintData</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>RLD</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QPushButton" name="pushButton_5">
+         <property name="text">
+          <string>Filter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="6">
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>Abort</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>LoadData</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QPushButton" name="pushButton_6">
+         <property name="text">
+          <string>Print list</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="7">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Tab 2</string>
+     </attribute>
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1081</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>false</bool>
+      </property>
+      <property name="verticalScrollMode">
+       <enum>QAbstractItemView::ScrollPerItem</enum>
+      </property>
+      <property name="horizontalScrollMode">
+       <enum>QAbstractItemView::ScrollPerItem</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <column>
        <property name="text">
-        <string>Filter</string>
+        <string>Link_ID</string>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="pushButton_3">
+      </column>
+      <column>
        <property name="text">
-        <string>Abort</string>
+        <string>Parent_ID</string>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton_2">
+      </column>
+      <column>
        <property name="text">
-        <string>PushButton</string>
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Message</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>RetrievedOn</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Author</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Page</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>331</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Search text</string>
+      </property>
+      <widget class="QTextEdit" name="textEdit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>311</width>
+         <height>71</height>
+        </rect>
        </property>
       </widget>
-     </item>
-     <item row="1" column="0" colspan="6">
-      <widget class="QTableWidget" name="tableWidget">
-       <property name="alternatingRowColors">
-        <bool>false</bool>
+      <widget class="QPushButton" name="pushButton_7">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>110</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
        </property>
-       <property name="verticalScrollMode">
-        <enum>QAbstractItemView::ScrollPerItem</enum>
+       <property name="text">
+        <string>Search</string>
        </property>
-       <property name="horizontalScrollMode">
-        <enum>QAbstractItemView::ScrollPerItem</enum>
-       </property>
-       <property name="sortingEnabled">
-        <bool>true</bool>
-       </property>
-       <column>
-        <property name="text">
-         <string>Link_ID</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Parent_ID</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>ID</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Name</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Message</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>RetrievedOn</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Author</string>
-        </property>
-       </column>
       </widget>
-     </item>
-    </layout>
+      <widget class="QRadioButton" name="radioButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Exact mode ?</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
    </widget>
-   <zorder>gridLayoutWidget_2</zorder>
-   <zorder>label_3</zorder>
-   <zorder>tableWidget</zorder>
-   <zorder>gridLayoutWidget</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

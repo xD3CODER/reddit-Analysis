@@ -1,11 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include <utils.h>
 #include <filecheking.h>
+#include <utils.h>
 #include <list.h>
+
+
 #include <QMainWindow>
 #include <QThread>
 #include <QDir>
+
 
 
 
@@ -28,7 +31,7 @@ public:
 public Q_SLOTS:
     // File checking
     void onLoadFinished(bool);
-    void onFileChanged(QJsonObject, int);
+    void onFileChanged(QJsonObject, int, float);
     void onFileSize(float);
     void onRamUpdate(int);
 
@@ -41,7 +44,7 @@ private slots:
 
     void on_comboBox_activated(const QString &arg1);
 
-    void on_comboBox_currentTextChanged(const QString &arg1);
+
 
     void on_pushButton_3_clicked();
 
@@ -49,10 +52,15 @@ private slots:
 
     void on_pushButton_5_clicked();
 
+    void on_pushButton_6_clicked();
+
+    void on_pushButton_7_clicked();
+
 private:
     Ui::MainWindow *ui;
      void loadFiles(QString directory = QDir::currentPath());
      void initValues();
+     QMovie *movie;
 };
 
 #endif // MAINWINDOW_H

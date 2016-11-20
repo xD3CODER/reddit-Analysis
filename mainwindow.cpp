@@ -9,20 +9,23 @@
 #include <QThread>
 #include <QTime>
 #include <QSortFilterProxyModel>
-
-
-float loadedData;
+#include <list.h>
+#include <QMovie>
 float fileSize;
- QTime myTimer;
- quint32 timestamp;
-
+QTime myTimer;
+quint32 timestamp;
+LinkedList* list;
+void delay(int);
  int nMilliseconds;
+ float mos;
  float kos;
  float restant;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     ui->tableWidget->setColumnWidth(0, 120);
     ui->tableWidget->setColumnWidth(1, 120);
@@ -35,16 +38,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(utils,SIGNAL(ramUsage(int)),this,SLOT(onRamUpdate(int)));
     utils->start();
 
-    LinkedList* list = new LinkedList(); // I declare a pointer to a list
-    list->addAtFront(1142);
-    list->addAtFront(12);
-    list->addAtFront(112);
-    // I call a method on a pointer to an object
-    list->printList();
+ movie = new QMovie("images/loading.gif");
+    ui->label_7->setMovie(movie);
+    movie->start();
+    movie->setPaused(true);
+
+
+
+    list = new LinkedList(); // I declare a pointer to a list
 }
 
 MainWindow::~MainWindow()
 {
+
     delete ui;
 }
 
@@ -83,8 +89,9 @@ void MainWindow::on_pushButton_clicked()
 
 
 }
-void MainWindow::onLoadFinished(bool State)
+void MainWindow::onLoadFinished(bool)
 {
+    movie->setPaused(true);
     ui->label_3->setText("Fichier chargé avec succès !");
     mThread->terminate();
     initValues();
@@ -109,32 +116,29 @@ void MainWindow::onRamUpdate(int usage)
 }
 
 
-void MainWindow::onFileChanged(QJsonObject name, int count)
+void MainWindow::onFileChanged(QJsonObject , int , float loadedData)
 {
 
 
-    QJsonDocument doc(name);
-    QString strJson(doc.toJson(QJsonDocument::Compact));
-    loadedData +=  strJson.length()+3;
 
+   /*
     ui->tableWidget->insertRow(count);
     ui->tableWidget->setItem(count, 0, new QTableWidgetItem(name["link_id"].toString()));
     ui->tableWidget->setItem(count, 1, new QTableWidgetItem(name["parent_id"].toString()));
     ui->tableWidget->setItem(count, 2, new QTableWidgetItem(name["id"].toString()));
     ui->tableWidget->setItem(count, 3, new QTableWidgetItem(name["name"].toString()));
-        ui->tableWidget->setItem(count, 4, new QTableWidgetItem(name["body"].toString()));
-    timestamp = name["created_utc"].toString().toUInt();
-     QDateTime create;
-    ui->tableWidget->setItem(count, 5, new QTableWidgetItem(create.fromTime_t(timestamp).toString("dd/MM/yyyy - hh:mm:ss AP")));
-  ui->tableWidget->setItem(count, 6, new QTableWidgetItem(name["author"].toString()));
-    ui->label_2->setText("Chargé dans la mémoire :" + QString::number(loadedData/1048576, 'f', 4) + " Mo");
+    ui->tableWidget->setItem(count, 4, new QTableWidgetItem(name["body"].toString()));
+    */
+
+//    ui->label_2->setText("Chargé dans la mémoire :" + QString::number(loadedData/1048576, 'f', 4) + " Mo");
 
 
         // do something..
         nMilliseconds = myTimer.elapsed();
+        mos = (loadedData/1048576)/(nMilliseconds*0.001);
         kos = (loadedData/1024)/(nMilliseconds*0.001);
         restant = fileSize - loadedData;
-        ui->label_3->setText("Vitesse de chargement :" + QString::number(kos, 'f', 2) + " Ko/s");
+        ui->label_3->setText("Vitesse de chargement :" + QString::number(mos, 'f', 2) + " Mo/s");
         ui->label_6->setText("Fini dans : " + QDateTime::fromTime_t(quint32(restant/(kos*1024))).toString("mm:ss"));
         ui->progressBar->setValue((loadedData/fileSize)*100);
 
@@ -145,18 +149,20 @@ void MainWindow::on_pushButton_2_clicked()
 {
 
 
-    // Selected file not correct or inexistant
+
+     // Selected file not correct or inexistant
     if (!FileName.endsWith(".json"))
     {
         return;
     }
+    movie->setPaused(false);
     ui->label_2->setText("Ouverture du fichier en cours...");
     ui->progressBar->setMaximum(0);
     ui->progressBar->setMinimum(0);
     ui->progressBar->setValue(0);
     // Load File
     mThread = new FileCheking(this);
-    connect(mThread,SIGNAL(CheckingThisFile(QJsonObject, int)),this,SLOT(onFileChanged(QJsonObject, int)));
+    connect(mThread,SIGNAL(CheckingThisFile(QJsonObject, int, float)),this,SLOT(onFileChanged(QJsonObject, int, float)));
     connect(mThread,SIGNAL(loadFinished(bool)),this,SLOT(onLoadFinished(bool)));
     connect(mThread,SIGNAL(FileSize(float)),this,SLOT(onFileSize(float)));
     // Start thread
@@ -170,10 +176,7 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
     FileName = arg1+".json";
 }
 
-void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
-{
 
-}
 
 void MainWindow::initValues()
 {
@@ -207,23 +210,12 @@ void MainWindow::on_pushButton_4_clicked()
 }
 
 void MainWindow::on_pushButton_5_clicked()
-{/*
-    QString filter = "t3_7ands";
-    for( int i = 0; i < ui->tableWidget->rowCount(); ++i )
-    {
-        bool match = false;
-        for( int j = 0; j < ui->tableWidget->columnCount(); ++j )
-        {
-            QTableWidgetItem *item = ui->tableWidget->item( i, j );
-            if( item->text().contains(filter) )
-            {
-                match = true;
-                break;
-            }
-        }
-        ui->tableWidget->setRowHidden( i, !match );
-    }
-*/
+{
+
+
+
+
+    /* SEARCH IN QTABLE
 
     QString findName = "t3_7ajqp";
     QAbstractItemModel *modl = ui->tableWidget->model();
@@ -251,6 +243,48 @@ void MainWindow::on_pushButton_5_clicked()
     }
       ui->label_3->setText("finish");
     proxy.clear();
+
+    */
+
+
+
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+     QString result;
+     QMessageBox msgBox;
+     Node *temp = list->head;
+     int counter = 0;
+     while (temp!= NULL) {
+         ui->tableWidget->insertRow(counter);
+         ui->tableWidget->setItem(counter, 0, new QTableWidgetItem(temp->data["link_id"].toString()));
+         ui->tableWidget->setItem(counter, 1, new QTableWidgetItem(temp->data["parent_id"].toString()));
+         ui->tableWidget->setItem(counter, 2, new QTableWidgetItem(temp->data["id"].toString()));
+         ui->tableWidget->setItem(counter, 3, new QTableWidgetItem(temp->data["name"].toString()));
+         ui->tableWidget->setItem(counter, 4, new QTableWidgetItem(temp->data["body"].toString()));
+         timestamp = temp->data["created_utc"].toString().toUInt();
+         QDateTime create;
+         ui->tableWidget->setItem(counter, 5, new QTableWidgetItem(create.fromTime_t(timestamp).toString("dd/MM/yyyy - hh:mm:ss AP")));
+         ui->tableWidget->setItem(counter, 6, new QTableWidgetItem(temp->data["author"].toString()));
+         counter++;
+         temp = temp->next;
+     }
+     msgBox.setText("Finished");
+     msgBox.exec();
+}
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    Utils Checking;
+    if (ui->radioButton->isChecked())
+    {
+         Checking.SearchString(" "+ui->textEdit->toPlainText()+" ");
+    }
+    else
+    {
+         Checking.SearchString(ui->textEdit->toPlainText());
+    }
 
 
 }

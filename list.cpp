@@ -10,17 +10,11 @@ LinkedList::~LinkedList()
 //dtor
 }
 
-void LinkedList::addAtFront(int newElement)
+void LinkedList::addAtFront(QJsonObject newElement)
 {
 
-
-
-    QMessageBox msgBox;
-   msgBox.setText("addedtop");
-   msgBox.exec();
     Node *temp = new Node();
-    temp->data.id = newElement;
-    temp->data.key = 0;
+    temp->data = newElement;
     temp->next = head;
     head = temp;
  //   tail = 0;
@@ -33,16 +27,16 @@ void LinkedList::addAtFront(int newElement)
 
 void LinkedList::printList()
 {
+
       QString result;
       QMessageBox msgBox;
        Node *temp = head;
        while (temp!= NULL) {
-           result.append("->("+QString::number(temp->data.id)+")");
+           result.append("->("+ temp->data["name"].toString() +")");
            temp = temp->next;
            msgBox.setText(result);
            msgBox.exec();
        }
-
        msgBox.setText("Finished");
        msgBox.exec();
 
