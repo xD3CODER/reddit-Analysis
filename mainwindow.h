@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include <utils.h>
 #include <filecheking.h>
+#include <list.h>
 #include <QMainWindow>
 #include <QThread>
 #include <QDir>
@@ -19,6 +20,7 @@ class MainWindow : public QMainWindow
 public:
     FileCheking *mThread;
     Utils *utils;
+
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -29,6 +31,7 @@ public Q_SLOTS:
     void onFileChanged(QJsonObject, int);
     void onFileSize(float);
     void onRamUpdate(int);
+
 
 
 
@@ -43,6 +46,8 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_4_clicked();
+
+    void on_pushButton_5_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -15,10 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     filecheking.cpp \
-    utils.cpp
+    utils.cpp \
+    list.cpp
 
 HEADERS  += mainwindow.h \
     filecheking.h \
-    utils.h
+    utils.h \
+    list.h
 
 FORMS    += mainwindow.ui

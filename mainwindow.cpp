@@ -8,7 +8,7 @@
 #include <QTextCodec>
 #include <QThread>
 #include <QTime>
-
+#include <QSortFilterProxyModel>
 
 
 float loadedData;
@@ -35,6 +35,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(utils,SIGNAL(ramUsage(int)),this,SLOT(onRamUpdate(int)));
     utils->start();
 
+    LinkedList* list = new LinkedList(); // I declare a pointer to a list
+    list->addAtFront(1142);
+    list->addAtFront(12);
+    list->addAtFront(112);
+    // I call a method on a pointer to an object
+    list->printList();
 }
 
 MainWindow::~MainWindow()
@@ -115,10 +121,12 @@ void MainWindow::onFileChanged(QJsonObject name, int count)
     ui->tableWidget->setItem(count, 0, new QTableWidgetItem(name["link_id"].toString()));
     ui->tableWidget->setItem(count, 1, new QTableWidgetItem(name["parent_id"].toString()));
     ui->tableWidget->setItem(count, 2, new QTableWidgetItem(name["id"].toString()));
-    ui->tableWidget->setItem(count, 3, new QTableWidgetItem(name["body"].toString()));
+    ui->tableWidget->setItem(count, 3, new QTableWidgetItem(name["name"].toString()));
+        ui->tableWidget->setItem(count, 4, new QTableWidgetItem(name["body"].toString()));
     timestamp = name["created_utc"].toString().toUInt();
      QDateTime create;
-    ui->tableWidget->setItem(count, 4, new QTableWidgetItem(create.fromTime_t(timestamp).toString("dd/MM/yyyy - hh:mm:ss AP")));
+    ui->tableWidget->setItem(count, 5, new QTableWidgetItem(create.fromTime_t(timestamp).toString("dd/MM/yyyy - hh:mm:ss AP")));
+  ui->tableWidget->setItem(count, 6, new QTableWidgetItem(name["author"].toString()));
     ui->label_2->setText("Chargé dans la mémoire :" + QString::number(loadedData/1048576, 'f', 4) + " Mo");
 
 
@@ -196,4 +204,53 @@ void MainWindow::on_pushButton_3_clicked()
 void MainWindow::on_pushButton_4_clicked()
 {
      loadFiles();
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{/*
+    QString filter = "t3_7ands";
+    for( int i = 0; i < ui->tableWidget->rowCount(); ++i )
+    {
+        bool match = false;
+        for( int j = 0; j < ui->tableWidget->columnCount(); ++j )
+        {
+            QTableWidgetItem *item = ui->tableWidget->item( i, j );
+            if( item->text().contains(filter) )
+            {
+                match = true;
+                break;
+            }
+        }
+        ui->tableWidget->setRowHidden( i, !match );
+    }
+*/
+
+    QString findName = "t3_7ajqp";
+    QAbstractItemModel *modl = ui->tableWidget->model();
+    QSortFilterProxyModel proxy;
+    proxy.setSourceModel(modl);
+    proxy.setFilterKeyColumn(1);
+    proxy.setFilterFixedString(findName);
+    // now the proxy only contains rows that match the name
+    // let's take the first one and map it to the original model
+    for (int i=0; ui->tableWidget->rowCount(); i++)
+    {
+        QModelIndex matchingIndex = proxy.mapToSource(proxy.index(i,i));
+        if(matchingIndex.isValid()){
+
+            ui->tableWidget->scrollTo(matchingIndex,QAbstractItemView::EnsureVisible);
+            QString data = ui->tableWidget->model()->data(ui->tableWidget->model()->index(matchingIndex.row(),3)).toString();
+          //  QMessageBox::information(this,"Name Search:", data);
+            ui->label_2->setText(data);
+         //   ui->tableWidget->setRowCount(0);
+
+         //   ui->tableWidget->setRowHidden(!matchingIndex.row(), true);
+        } else {
+            //QMessageBox::information(this,"Name Search:", "Match not found!");
+        }
+    }
+      ui->label_3->setText("finish");
+    proxy.clear();
+
+
 }
