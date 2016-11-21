@@ -9,15 +9,18 @@
 #include <QThread>
 #include <QTime>
 #include <QSortFilterProxyModel>
-#include <list.h>
+
 #include <QMovie>
 #include <QNetworkAccessManager>
+#include "utils.h"
+#include "list.h"
 
 float fileSize;
 QTime myTimer;
 quint32 timestamp;
 LinkedList* list;
 void delay(int);
+ Utils *debug = new Utils();
  int nMilliseconds;
  float mos;
  float kos;
@@ -46,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     movie->setPaused(true);
     list = new LinkedList();
 
+    debug->msg("test");
 
      Downloader *te = new Downloader;
      te->getRoot();

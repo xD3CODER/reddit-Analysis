@@ -11,6 +11,10 @@
 #include <QNetworkReply>
 #include <QFile>
 #include <QStringList>
+#define DEBUG 1;
+
+
+extern QStringList remoteDataList;
 
 class Utils : public QThread
 {
@@ -20,6 +24,7 @@ public:
     void run();
     bool Stop;
     void doDownload();
+    void msg(QString);
 void SearchString(QString data);
 
 Q_SIGNALS:
@@ -35,8 +40,8 @@ public:
     explicit Downloader(QObject *parent = 0);
     bool Stop;
     void doDownload(QString);
-    void run();
     void SearchString(QString data);
+
     void writeFile(QString);
     void getRoot();
     QNetworkAccessManager *manager;
@@ -47,5 +52,6 @@ void writingFile(QString);
 
 };
 
+extern Utils *debug;
 
 #endif // UTILS_H

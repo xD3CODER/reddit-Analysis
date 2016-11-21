@@ -1,4 +1,5 @@
 #include "list.h"
+#include "utils.h"
 #include <iostream>
 #include <stdlib.h>
 #include <QMessageBox>
@@ -17,9 +18,7 @@ void LinkedList::addAtFront(QJsonObject newElement)
     temp->data = newElement;
     temp->next = head;
     head = temp;
- //   tail = 0;
     ++size;
-
 }
 
 
@@ -27,6 +26,8 @@ void LinkedList::addAtFront(QJsonObject newElement)
 
 void LinkedList::printList()
 {
+
+
 
       QString result;
       QMessageBox msgBox;
@@ -37,6 +38,7 @@ void LinkedList::printList()
            msgBox.setText(result);
            msgBox.exec();
        }
+       debug->msg("Finished");
        msgBox.setText("Finished");
        msgBox.exec();
 

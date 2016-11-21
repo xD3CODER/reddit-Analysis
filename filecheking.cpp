@@ -2,6 +2,7 @@
 #include <QtCore>
 #include <QApplication>
 #include <list.h>
+
 QString FileName;
 float loadedData;
 void delay(int wait);

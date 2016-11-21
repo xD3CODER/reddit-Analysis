@@ -4,7 +4,6 @@
 #include <QJsonObject>
 
 
-
 struct Node
 {
     QJsonObject data;
