@@ -3,8 +3,6 @@
 #include <filecheking.h>
 #include <utils.h>
 #include <list.h>
-
-
 #include <QMainWindow>
 #include <QThread>
 #include <QDir>
@@ -23,6 +21,7 @@ class MainWindow : public QMainWindow
 public:
     FileCheking *mThread;
     Utils *utils;
+    Downloader *download;
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -34,7 +33,7 @@ public Q_SLOTS:
     void onFileChanged(QJsonObject, int, float);
     void onFileSize(float);
     void onRamUpdate(int);
-
+    void onFileDownloaded(QString);
 
 
 
@@ -55,6 +54,8 @@ private slots:
     void on_pushButton_6_clicked();
 
     void on_pushButton_7_clicked();
+
+    void on_pushButton_8_clicked();
 
 private:
     Ui::MainWindow *ui;

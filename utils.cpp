@@ -57,62 +57,23 @@ void Utils::SearchString(QString data)
 
 
 
-QDownloader::QDownloader(QObject *parent) :
-    QObject(parent)
+Downloader::Downloader(QObject *parent) :
+   QThread(parent)
 {
     manager = new QNetworkAccessManager;
-
+ manager->deleteLater();
 }
 
-QDownloader::~QDownloader()
-{
-    manager->deleteLater();
-}
-
-void QDownloader::getRoot(){
-
+void Downloader::doDownload(QString filename){
     QEventLoop eventLoop;
 
-
+    QString outputFilename = "/data/"+filename;
+        qDebug("Download started");
        QNetworkAccessManager mgr;
        QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
       qDebug("started");
 
-       QNetworkRequest req( QUrl( QString("http://89.234.183.123/reddit/") ) );
-       QNetworkReply *reply = mgr.get(req);
-       eventLoop.exec();
-        qDebug("finish");
-       if (reply->error() == QNetworkReply::NoError) {
-           //success
-           QByteArray data = reply->readAll();
-           QRegularExpression regex("<a href=\"(.*)\">(.*)</a></td><td align=\"right\">");
-           QRegularExpressionMatch match = regex.match(data);
-
-           QString textYouWant = match.captured(3);
-
-
-            qDebug() << "Done" << textYouWant;
-           delete reply;
-       }
-       else
-       {
-
-           qDebug() << "Failure" <<reply->errorString();
-           delete reply;
-
-}
-}
-
-void QDownloader::writeFile(QString filename){
-
-    QEventLoop eventLoop;
-
-
-       QNetworkAccessManager mgr;
-       QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-      qDebug("started");
-
-       QNetworkRequest req( QUrl( QString("http://89.234.183.123/reddit/RC_2008-01.json") ) );
+       QNetworkRequest req( QUrl( QString("http://89.234.183.123/reddit/"+filename) ) );
        QNetworkReply *reply = mgr.get(req);
        eventLoop.exec();
         qDebug("finish");
@@ -121,7 +82,7 @@ void QDownloader::writeFile(QString filename){
            QByteArray data = reply->readAll();
 
 
-           QString outputFilename = "Results.txt";
+
            QFile outputFile(outputFilename);
            outputFile.open(QIODevice::WriteOnly);
 
@@ -136,7 +97,7 @@ void QDownloader::writeFile(QString filename){
            outputFile.write(data);
 
            outputFile.close();
-
+           Q_EMIT writingFile(outputFilename);
 
            delete reply;
        }
@@ -146,5 +107,91 @@ void QDownloader::writeFile(QString filename){
            delete reply;
 
 }
+}
+
+void Downloader::run()
+{
+    QEventLoop eventLoop;
+
+        qDebug("Download started");
+       QNetworkAccessManager mgr;
+       QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+      qDebug("started");
+
+       QNetworkRequest req( QUrl( QString("https://www.gravatar.com/avatar/c11487528b08658cc7ed023c1cb21511/?s=256&r=g&d=https%3A%2F%2Fopenclassrooms.com%2Fbundles%2Fcommon%2Fimages%2Favatar_defaut.png") ) );
+       QNetworkReply *reply = mgr.get(req);
+       eventLoop.exec();
+        qDebug("finish");
+       if (reply->error() == QNetworkReply::NoError) {
+           //success
+           QByteArray data = reply->readAll();
+
+
+           QString outputFilename = "RC_2008-03.json";
+           QFile outputFile(outputFilename);
+           outputFile.open(QIODevice::WriteOnly);
+
+
+           if(!outputFile.isOpen()){
+
+           }
+
+
+
+
+           outputFile.write(data);
+
+           outputFile.close();
+           Q_EMIT writingFile(outputFilename);
+
+           delete reply;
+       }
+       else {
+
+           qDebug() << "Failure" <<reply->errorString();
+           delete reply;
 
 }
+}
+
+void Downloader::getRoot(){
+
+    QEventLoop eventLoop;
+
+
+       QNetworkAccessManager mgr;
+       QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+      qDebug("started");
+
+       QNetworkRequest req( QUrl( QString("http://89.234.183.123/reddit/list.php") ) );
+       QNetworkReply *reply = mgr.get(req);
+       eventLoop.exec();
+        qDebug("finish");
+       if (reply->error() == QNetworkReply::NoError) {
+           //success
+           QByteArray data = reply->readAll();
+           QString DataAsString = QTextCodec::codecForMib(1015)->toUnicode(data);
+
+           QStringList query = DataAsString.split(";");;
+
+           QMessageBox ms;
+           ms.setText(data);
+           ms.exec();
+
+           for (int i = 0; i < query.size(); ++i)
+                qDebug ("a\n");
+
+
+
+
+           delete reply;
+       }
+       else
+       {
+
+           qDebug() << "Failure" <<reply->errorString();
+           delete reply;
+
+}
+}
+

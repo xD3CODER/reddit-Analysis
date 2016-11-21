@@ -12,6 +12,7 @@
 #include <list.h>
 #include <QMovie>
 #include <QNetworkAccessManager>
+
 float fileSize;
 QTime myTimer;
 quint32 timestamp;
@@ -45,8 +46,9 @@ MainWindow::MainWindow(QWidget *parent) :
     movie->setPaused(true);
     list = new LinkedList();
 
-    QDownloader *te = new QDownloader;
-    te->getRoot();
+
+     Downloader *te = new Downloader;
+     te->getRoot();
 }
 
 
@@ -288,6 +290,17 @@ void MainWindow::on_pushButton_7_clicked()
     {
          Checking.SearchString(ui->textEdit->toPlainText());
     }
+}
 
+void MainWindow::onFileDownloaded(QString){
+    QMessageBox msg;
+    msg.setText("Downloaded");
+    msg.exec();
+}
 
+void MainWindow::on_pushButton_8_clicked()
+{
+    download = new Downloader(this);
+    connect(download,SIGNAL(writingFile(QString)),this,SLOT(onFileDownloaded(QString)));
+    download->doDownload("RC_2008-03.json");
 }

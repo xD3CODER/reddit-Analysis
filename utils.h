@@ -5,7 +5,12 @@
 #include <QDateTime>
 #include <QFile>
 #include <QDebug>
-
+#include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QFile>
+#include <QStringList>
 
 class Utils : public QThread
 {
@@ -23,29 +28,22 @@ Q_SIGNALS:
 };
 
 
-#include <QObject>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QFile>
-#include <QStringList>
-
-class QDownloader : public QObject
+class Downloader : public QThread
 {
     Q_OBJECT
 public:
-    explicit QDownloader(QObject *parent = 0);
-    virtual ~QDownloader();
+    explicit Downloader(QObject *parent = 0);
+    bool Stop;
+    void doDownload(QString);
+    void run();
+    void SearchString(QString data);
     void writeFile(QString);
     void getRoot();
-
-private:
     QNetworkAccessManager *manager;
     QNetworkReply *reply;
     QFile *file;
 Q_SIGNALS:
-
-private slots:
+void writingFile(QString);
 
 };
 

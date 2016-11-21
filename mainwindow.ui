@@ -25,7 +25,7 @@
       <x>10</x>
       <y>630</y>
       <width>1111</width>
-      <height>137</height>
+      <height>145</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,1">
@@ -169,7 +169,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -185,6 +185,37 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="4">
+        <widget class="QPushButton" name="pushButton_6">
+         <property name="text">
+          <string>Print list</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="7">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>RLD</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QPushButton" name="pushButton_5">
+         <property name="text">
+          <string>Filter</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="2">
         <widget class="QComboBox" name="comboBox">
          <property name="editable">
@@ -207,20 +238,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <widget class="QPushButton" name="pushButton_4">
-         <property name="text">
-          <string>RLD</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QPushButton" name="pushButton_5">
-         <property name="text">
-          <string>Filter</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="6">
         <widget class="QPushButton" name="pushButton_3">
          <property name="text">
@@ -235,20 +252,10 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="4">
-        <widget class="QPushButton" name="pushButton_6">
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButton_8">
          <property name="text">
-          <string>Print list</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="7">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <string>DownloadFile</string>
          </property>
         </widget>
        </item>

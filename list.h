@@ -5,11 +5,6 @@
 
 
 
-struct dataElement {
-  int key;
-  int id;
-};
-
 struct Node
 {
     QJsonObject data;
