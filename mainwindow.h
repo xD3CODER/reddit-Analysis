@@ -8,7 +8,7 @@
 #include <QMainWindow>
 #include <QThread>
 #include <QDir>
-
+#include <QNetworkReply>
 
 
 

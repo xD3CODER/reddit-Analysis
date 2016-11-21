@@ -11,6 +11,7 @@
 #include <QSortFilterProxyModel>
 #include <list.h>
 #include <QMovie>
+#include <QNetworkAccessManager>
 float fileSize;
 QTime myTimer;
 quint32 timestamp;
@@ -38,15 +39,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(utils,SIGNAL(ramUsage(int)),this,SLOT(onRamUpdate(int)));
     utils->start();
 
- movie = new QMovie("images/loading.gif");
+    movie = new QMovie("images/loading.gif");
     ui->label_7->setMovie(movie);
     movie->start();
     movie->setPaused(true);
+    list = new LinkedList();
 
-
-
-    list = new LinkedList(); // I declare a pointer to a list
+    QDownloader *te = new QDownloader;
+    te->getRoot();
 }
+
+
 
 MainWindow::~MainWindow()
 {

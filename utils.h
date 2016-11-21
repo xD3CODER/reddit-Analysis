@@ -22,4 +22,32 @@ Q_SIGNALS:
 
 };
 
+
+#include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QFile>
+#include <QStringList>
+
+class QDownloader : public QObject
+{
+    Q_OBJECT
+public:
+    explicit QDownloader(QObject *parent = 0);
+    virtual ~QDownloader();
+    void writeFile(QString);
+    void getRoot();
+
+private:
+    QNetworkAccessManager *manager;
+    QNetworkReply *reply;
+    QFile *file;
+Q_SIGNALS:
+
+private slots:
+
+};
+
+
 #endif // UTILS_H
