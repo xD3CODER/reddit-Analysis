@@ -185,34 +185,38 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="4">
+       <item row="0" column="5">
         <widget class="QPushButton" name="pushButton_6">
          <property name="text">
           <string>Print list</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="7">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
+       <item row="0" column="4">
         <widget class="QPushButton" name="pushButton_4">
          <property name="text">
           <string>RLD</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="5">
+       <item row="0" column="6">
         <widget class="QPushButton" name="pushButton_5">
          <property name="text">
           <string>Filter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>LoadData</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>PrintData</string>
          </property>
         </widget>
        </item>
@@ -231,24 +235,10 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>PrintData</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="6">
+       <item row="0" column="7">
         <widget class="QPushButton" name="pushButton_3">
          <property name="text">
           <string>Abort</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>LoadData</string>
          </property>
         </widget>
        </item>
@@ -256,6 +246,31 @@
         <widget class="QPushButton" name="pushButton_8">
          <property name="text">
           <string>DownloadFile</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QComboBox" name="comboBox_2">
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentText">
+          <string notr="true">Sélectionnez un fichier</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Sélectionnez un fichier</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="8">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>

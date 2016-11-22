@@ -77,7 +77,7 @@ Downloader::Downloader(QObject *parent) :
 void Downloader::doDownload(QString filename){
     QEventLoop eventLoop;
 
-    QString outputFilename = "/data/"+filename;
+    QString outputFilename = "data/"+filename;
        debug->msg("Download of "+ filename +" started");
        QNetworkAccessManager mgr;
        QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
@@ -134,17 +134,15 @@ void Downloader::getRoot(){
        if (reply->error() == QNetworkReply::NoError) {
            //success
            QByteArray data = reply->readAll();
-           QString DataAsString = QString::fromUtf8( data.toStdString().c_str());
-
-           QString list = "test;test2;test3";
-           QStringList remoteDataList = DataAsString.split(";");;
+           QString DataAsString = QString::fromUtf8(data.toStdString().c_str()).simplified();
+           QStringList remoteDataList = DataAsString.split(";");
+           debug->msg("test:");
            for (int i = 0; i < remoteDataList.size(); ++i){
-
                debug->msg(remoteDataList.at(i));
            }
 
 
-
+            Q_EMIT gotRoot(remoteDataList);
            delete reply;
        }
        else

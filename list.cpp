@@ -26,9 +26,6 @@ void LinkedList::addAtFront(QJsonObject newElement)
 
 void LinkedList::printList()
 {
-
-
-
       QString result;
       QMessageBox msgBox;
        Node *temp = head;

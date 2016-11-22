@@ -25,7 +25,7 @@ public:
     bool Stop;
     void doDownload();
     void msg(QString);
-void SearchString(QString data);
+    void SearchString(QString data);
 
 Q_SIGNALS:
     void ramUsage(int);
@@ -49,7 +49,7 @@ public:
     QFile *file;
 Q_SIGNALS:
 void writingFile(QString);
-
+void gotRoot(QStringList);
 };
 
 extern Utils *debug;

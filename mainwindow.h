@@ -37,6 +37,7 @@ public Q_SLOTS:
     void onFileSize(float);
     void onRamUpdate(int);
     void onFileDownloaded(QString);
+    void onGotRoot(QStringList);
 
 
 
@@ -59,6 +60,8 @@ private slots:
     void on_pushButton_7_clicked();
 
     void on_pushButton_8_clicked();
+
+    void on_comboBox_2_activated(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

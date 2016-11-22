@@ -25,7 +25,7 @@ void delay(int);
  float mos;
  float kos;
  float restant;
-
+QStringList remoteDataList;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -51,8 +51,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     debug->msg("test");
 
-     Downloader *te = new Downloader;
-     te->getRoot();
+     download = new Downloader;
+     connect(download,SIGNAL(gotRoot(QStringList)),this,SLOT(onGotRoot(QStringList)));
+     download->getRoot();
+
 }
 
 
@@ -84,6 +86,27 @@ void MainWindow::loadFiles(QString directory)
     {
         ui->comboBox->addItem("Aucun fichier disponible");
         ui->comboBox->setEnabled(false);
+    }
+
+}
+
+void MainWindow::onGotRoot(QStringList data)
+{
+    int count=0;
+    QMessageBox msgBox;
+    ui->comboBox_2->clear();
+    ui->comboBox_2->addItem("Fichier serveur");
+
+    for (int i = 0; i < data.size(); ++i){
+        count++;
+        ui->comboBox_2->addItem(data.at(i));
+    }
+
+
+    if (count == 0)
+    {
+        ui->comboBox_2->addItem("Aucun fichier disponible");
+        ui->comboBox_2->setEnabled(false);
     }
 
 }
@@ -304,7 +327,12 @@ void MainWindow::onFileDownloaded(QString){
 
 void MainWindow::on_pushButton_8_clicked()
 {
-    download = new Downloader(this);
+
+}
+
+void MainWindow::on_comboBox_2_activated(const QString &arg1)
+{
     connect(download,SIGNAL(writingFile(QString)),this,SLOT(onFileDownloaded(QString)));
-    download->doDownload("RC_2008-03.json");
+    download->doDownload(arg1);
+    debug->msg(arg1);
 }
