@@ -9,7 +9,6 @@
 #include <QThread>
 #include <QTime>
 #include <QSortFilterProxyModel>
-
 #include <QMovie>
 #include <QNetworkAccessManager>
 #include "utils.h"
@@ -25,7 +24,9 @@ void delay(int);
  float mos;
  float kos;
  float restant;
+ int indexOfRemote;
 QStringList remoteDataList;
+QStringList localDataList;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -75,10 +76,9 @@ void MainWindow::loadFiles(QString directory)
     ui->comboBox->addItem("Sélectionnez un fichier");
     foreach (QFileInfo file, files){
         if (!file.isDir() && file.fileName().endsWith(".json")){
-
                count++;
                ui->comboBox->addItem(file.baseName());
-
+               localDataList.append(file.baseName()+".json");
         }
 }
 
@@ -98,8 +98,16 @@ void MainWindow::onGotRoot(QStringList data)
     ui->comboBox_2->addItem("Fichier serveur");
 
     for (int i = 0; i < data.size(); ++i){
+        if(!localDataList.contains(data.at(i)))
+        {
+            if (count==0)
+            {
+                indexOfRemote = ui->comboBox->count();
+            }
         count++;
-        ui->comboBox_2->addItem(data.at(i));
+        ui->comboBox->addItem(data.at(i).left(data.at(i).size()-5));
+        ui->comboBox->setItemData( ui->comboBox->count()-1, QColor( Qt::yellow ), Qt::BackgroundRole );
+        }
     }
 
 
@@ -205,7 +213,22 @@ void MainWindow::on_pushButton_2_clicked()
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
     // Change selected file name
-    FileName = arg1+".json";
+
+    QMessageBox msg;
+    msg.setText(QString::number(ui->comboBox->currentIndex()));
+    msg.exec();
+    if(ui->comboBox->currentIndex() < indexOfRemote)
+    {
+         FileName = arg1+".json";
+         ui->pushButton->setEnabled(false);
+    }
+    else
+    {
+        connect(download,SIGNAL(writingFile(QString)),this,SLOT(onFileDownloaded(QString)));
+        download->doDownload(arg1+".json");
+        debug->msg(arg1);
+    }
+
 }
 
 
@@ -332,7 +355,5 @@ void MainWindow::on_pushButton_8_clicked()
 
 void MainWindow::on_comboBox_2_activated(const QString &arg1)
 {
-    connect(download,SIGNAL(writingFile(QString)),this,SLOT(onFileDownloaded(QString)));
-    download->doDownload(arg1);
-    debug->msg(arg1);
+
 }
