@@ -65,8 +65,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-     void loadFiles(QString directory = QDir::currentPath());
+     void loadPath(QString directory = QDir::currentPath());
      void initValues();
+     void loadFile();
      QMovie *movie;
 };
 

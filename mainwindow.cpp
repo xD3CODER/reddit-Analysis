@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setColumnWidth(2, 120);
     ui->tableWidget->setColumnWidth(3, 400);
     ui->progressBar->setValue(0);
-    loadFiles();
+    loadPath();
     initValues();
     utils = new Utils(this);
     connect(utils,SIGNAL(ramUsage(int)),this,SLOT(onRamUpdate(int)));
@@ -66,7 +66,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::loadFiles(QString directory)
+void MainWindow::loadPath(QString directory)
 {
     int count=0;
     QMessageBox msgBox;
@@ -94,8 +94,6 @@ void MainWindow::onGotRoot(QStringList data)
 {
     int count=0;
     QMessageBox msgBox;
-    ui->comboBox_2->clear();
-    ui->comboBox_2->addItem("Fichier serveur");
 
     for (int i = 0; i < data.size(); ++i){
         if(!localDataList.contains(data.at(i)))
@@ -113,8 +111,8 @@ void MainWindow::onGotRoot(QStringList data)
 
     if (count == 0)
     {
-        ui->comboBox_2->addItem("Aucun fichier disponible");
-        ui->comboBox_2->setEnabled(false);
+        ui->comboBox->addItem("Aucun fichier disponible");
+        ui->comboBox->setEnabled(false);
     }
 
 }
@@ -191,6 +189,11 @@ void MainWindow::on_pushButton_2_clicked()
 
 
      // Selected file not correct or inexistant
+
+
+}
+
+void MainWindow::loadFile(){
     if (!FileName.endsWith(".json"))
     {
         return;
@@ -207,20 +210,23 @@ void MainWindow::on_pushButton_2_clicked()
     connect(mThread,SIGNAL(FileSize(float)),this,SLOT(onFileSize(float)));
     // Start thread
     mThread->start();
-
 }
 
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
     // Change selected file name
 
+    ui->label_2->setText("Ouverture du fichier en cours...");
+    ui->progressBar->setMaximum(0);
+    ui->progressBar->setMinimum(0);
+    ui->progressBar->setValue(0);
     QMessageBox msg;
     msg.setText(QString::number(ui->comboBox->currentIndex()));
     msg.exec();
     if(ui->comboBox->currentIndex() < indexOfRemote)
     {
          FileName = arg1+".json";
-         ui->pushButton->setEnabled(false);
+         loadFile();
     }
     else
     {
@@ -261,7 +267,7 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-     loadFiles();
+     loadPath();
 }
 
 void MainWindow::on_pushButton_5_clicked()
@@ -342,10 +348,13 @@ void MainWindow::on_pushButton_7_clicked()
     }
 }
 
-void MainWindow::onFileDownloaded(QString){
+void MainWindow::onFileDownloaded(QString name){
+
+    FileName = name+".json";
     QMessageBox msg;
-    msg.setText("Downloaded");
+    msg.setText(FileName);
     msg.exec();
+    loadFile();
 }
 
 void MainWindow::on_pushButton_8_clicked()
