@@ -185,6 +185,13 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="6">
+        <widget class="QPushButton" name="pushButton_9">
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="4">
         <widget class="QPushButton" name="pushButton_6">
          <property name="text">
@@ -213,6 +220,20 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="6">
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>Abort</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>PrintData</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="2">
         <widget class="QComboBox" name="comboBox">
          <property name="editable">
@@ -228,28 +249,7 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>PrintData</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="6">
-        <widget class="QPushButton" name="pushButton_3">
-         <property name="text">
-          <string>Abort</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="pushButton_8">
-         <property name="text">
-          <string>DownloadFile</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="7">
+       <item row="3" column="0" colspan="7">
         <widget class="QLabel" name="label_7">
          <property name="text">
           <string>TextLabel</string>
@@ -257,6 +257,21 @@
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="QComboBox" name="comboBox_2">
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentText">
+          <string notr="true">Sélectionnez un fichier</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Sélectionnez un fichier</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>

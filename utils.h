@@ -24,13 +24,18 @@ public:
     void run();
     bool Stop;
     void doDownload();
-    void msg(QString);
+    void print_msg(QString);
     void SearchString(QString data);
 
 Q_SIGNALS:
     void ramUsage(int);
 
 };
+
+
+
+
+
 
 
 class Downloader : public QThread

@@ -24,7 +24,7 @@ public:
 
 Q_SIGNALS:
     void loadFinished(bool);
-    void CheckingThisFile(QJsonObject, int, float);
+    void CheckingThisFile(float);
     void FileSize(float);
 
 };

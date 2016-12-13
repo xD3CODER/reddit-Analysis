@@ -22,9 +22,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    FileCheking *mThread;
-    Utils *utils;
-    Downloader *download;
+    FileCheking *WORKER_files;
+    Utils *WORKER_ram;
+    Downloader *WORKER_downloader;
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -33,11 +33,11 @@ public:
 public Q_SLOTS:
     // File checking
     void onLoadFinished(bool);
-    void onFileChanged(QJsonObject, int, float);
+    void onFileChanged(float);
     void onFileSize(float);
     void onRamUpdate(int);
-    void onFileDownloaded(QString);
-    void onGotRoot(QStringList);
+    void onFileWrote(QString);
+    void onRemotePath(QStringList);
 
 
 
@@ -59,13 +59,15 @@ private slots:
 
     void on_pushButton_7_clicked();
 
-    void on_pushButton_8_clicked();
+
 
     void on_comboBox_2_activated(const QString &arg1);
 
+    void on_pushButton_9_clicked();
+
 private:
     Ui::MainWindow *ui;
-     void loadPath(QString directory = QDir::currentPath());
+     void getLocalPath(QString directory = QDir::currentPath());
      void initValues();
      void loadFile();
      QMovie *movie;

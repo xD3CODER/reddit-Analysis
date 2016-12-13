@@ -30,8 +30,6 @@ void  FileCheking::run()
     QJsonObject obj = doc.object();
     QJsonArray jsonArray = obj["messages"].toArray();
 
-
-
     QJsonDocument doc2(obj);
     QString strJson2(doc2.toJson(QJsonDocument::Compact));
     Q_EMIT FileSize(strJson2.size());
@@ -45,10 +43,10 @@ void  FileCheking::run()
         QString strJson(doc.toJson(QJsonDocument::Compact));
         loadedData +=  strJson.length()+3;
 
-        Q_EMIT CheckingThisFile(obj, count, loadedData);
+        Q_EMIT CheckingThisFile( loadedData);
 
         list->addAtFront(obj);
-        debug->msg(obj["name"].toString());
+        debug->print_msg(obj["name"].toString());
         count++;
        // this->msleep(1);
        // delay(1);
