@@ -1,8 +1,5 @@
 # Manuel d'utilisation
 
-## Application C++ (cliente)
-
-
 ## Programme Python (serveur)
 Le programme écrira les fichiers de sortie dans le répertoire out/ (relatif au dossier d'execution de sanitize.py).
 
