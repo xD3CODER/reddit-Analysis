@@ -74,7 +74,7 @@ void MainWindow::getLocalPath(QString directory)
     QDir dir(directory+"/data");
     QFileInfoList files = dir.entryInfoList();
     ui->comboBox->clear();
-    ui->comboBox->addItem("Sélectionnez un fichier");
+    ui->comboBox->addItem("   Select file");
     foreach (QFileInfo file, files){
         if (!file.isDir() && file.fileName().endsWith(".json")){
             count++;
@@ -85,7 +85,7 @@ void MainWindow::getLocalPath(QString directory)
 
     if (count == 0)
     {
-        ui->comboBox->addItem("Aucun fichier disponible");
+        ui->comboBox->addItem("No file avaible");
         ui->comboBox->setEnabled(false);
     }
 
@@ -112,7 +112,7 @@ void MainWindow::onRemotePath(QStringList data)
 
     if (count == 0)
     {
-        ui->comboBox->addItem("Aucun fichier disponible");
+        ui->comboBox->addItem("No file avaible");
         ui->comboBox->setEnabled(false);
     }
 
@@ -123,7 +123,7 @@ void MainWindow::onRemotePath(QStringList data)
 void MainWindow::onLoadFinished(bool)
 {
     movie->setPaused(true);
-    ui->label_3->setText("Fichier chargé avec succès !");
+    ui->label_3->setText("File successful loaded");
     WORKER_files->terminate();
     initValues();
     ui->pushButton_5->setEnabled(true);
@@ -137,7 +137,7 @@ void MainWindow::onFileSize(float Size)
     myTimer.restart();
     fileSize = Size;
     ui->label_2->setText(FileName);
-    ui->label->setText("Taille du fichier :" + QString::number(fileSize/1048576, 'f', 4) + " Mo");
+    ui->label->setText("Size of file :" + QString::number(fileSize/1048576, 'f', 4) + " Mo");
     ui->progressBar->setMaximum(100);
 }
 
@@ -156,8 +156,8 @@ void MainWindow::onFileChanged(float loadedData)
     mos = (loadedData/1048576)/(nMilliseconds*0.001);
     kos = (loadedData/1024)/(nMilliseconds*0.001);
     restant = fileSize - loadedData;
-    ui->label_3->setText("Vitesse de chargement :" + QString::number(mos, 'f', 2) + " Mo/s");
-    ui->label_6->setText("Fini dans : " + QDateTime::fromTime_t(quint32(restant/(kos*1024))).toString("mm:ss"));
+    ui->label_3->setText("Loading speed :" + QString::number(mos, 'f', 2) + " Mo/s");
+    ui->label_6->setText("End in : " + QDateTime::fromTime_t(quint32(restant/(kos*1024))).toString("mm:ss"));
     ui->progressBar->setValue((loadedData/fileSize)*100);
 }
 
@@ -172,7 +172,7 @@ void MainWindow::loadFile(){
         return;
     }
     movie->setPaused(false);
-    ui->label_2->setText("Ouverture du fichier en cours...");
+    ui->label_2->setText("Opening file...");
     ui->progressBar->setMaximum(0);
     ui->progressBar->setMinimum(0);
     ui->progressBar->setValue(0);
@@ -199,13 +199,13 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
 
     if(ui->comboBox->currentIndex() < indexOfRemote)
     {
-        ui->label_2->setText("Ouverture du fichier en cours...");
+        ui->label_2->setText("Opening file...");
         FileName = arg1+".json";
         loadFile();
     }
     else
     {
-        ui->label_2->setText("Téléchargement du fichier en cours...");
+        ui->label_2->setText("Downloading file...");
         connect(WORKER_downloader,SIGNAL(writingFile(QString)),this,SLOT(onFileWrote(QString)));
         WORKER_downloader->doDownload(arg1+".json");
         debug->print_msg(arg1);
@@ -309,7 +309,7 @@ void MainWindow::onFileWrote(QString name){
 
       initValues();
       QMessageBox::StandardButton reply;
-      reply = QMessageBox::question(this, "Fichier téléchargé", "Souhaitez-vous charger ce fichier ?",QMessageBox::Yes|QMessageBox::No);
+      reply = QMessageBox::question(this, "File downloaded", "Do you want to open it ?",QMessageBox::Yes|QMessageBox::No);
       if (reply == QMessageBox::Yes) {
         loadFile();
         WORKER_downloader->terminate();
@@ -318,9 +318,6 @@ void MainWindow::onFileWrote(QString name){
         WORKER_downloader->getRoot();
       }
 }
-
-
-
 
 
 
@@ -341,7 +338,7 @@ void MainWindow::on_pushButton_10_clicked()
              if(ui->checkBox->isChecked()){
              stream << t->user_ID << ";" << QString::number(t->messagecount) << "\n";
              }
-            ui->plainTextEdit->insertPlainText(t->user_ID +" à posté "+QString::number(t->messagecount) +" messages\n");
+            ui->plainTextEdit->insertPlainText(t->user_ID +" posted "+QString::number(t->messagecount) +" messages\n");
             ui->plainTextEdit->moveCursor (QTextCursor::End);
            //debug->print_msg( t->user_ID +" à posté "+QString::number(t->messagecount) +" messages");
             t=t->next;

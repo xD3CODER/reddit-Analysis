@@ -17,10 +17,9 @@ void delay( int millisecondsToWait )
 }
 
 
-
 void Utils::print_msg(QString data)
 {
-#if DEBUG == 1
+#if DEBUG
     qDebug(data.toStdString().c_str());
 #endif
 }
@@ -45,25 +44,6 @@ void Utils::run(){
     }
 }
 
-
-void Utils::SearchString(QString data)
-{
-
-    QString result;
-    QMessageBox msgBox;
-    Node *o = list->head;
-    int counter = 0;
-    while (o!= NULL) {
-        if (o->comment_id.toLower().contains(data.toLower()))
-        {
-            counter++;
-            result.append(QString::number(counter)+")"+o->comment_id +"\n*******************");
-        }
-        o = o->next;
-    }
-    msgBox.setText("Le mot "+ data +" est utilisé " + QString::number(counter)+ " fois");
-    msgBox.exec();
-}
 
 
 
@@ -106,14 +86,11 @@ void Downloader::doDownload(QString filename){
     }
 }
 
-
-
 void Downloader::getRoot(){
 
     QEventLoop eventLoop;
     QNetworkAccessManager mgr;
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-
     QNetworkRequest req( QUrl( QString("http://89.234.183.123/reddit/list.php") ) );
     QNetworkReply *reply = mgr.get(req);
     eventLoop.exec();

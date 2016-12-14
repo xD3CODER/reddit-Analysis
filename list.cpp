@@ -66,17 +66,12 @@ void LinkedList::getUsers()
 void LinkedList::printList()
 {
        QString result;
-       QMessageBox msgBox;
        Node *temp = head;
        while (temp->next != NULL) {
            result.append("->("+ temp->comment_id +")");
            temp = temp->next;
-           msgBox.setText(result);
-           msgBox.exec();
        }
        debug->print_msg("Finished");
-       msgBox.setText("Finished");
-       msgBox.exec();
 
 }
 

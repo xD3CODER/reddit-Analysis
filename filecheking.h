@@ -9,7 +9,6 @@
 #include<QJsonArray>
 #include <QFile>
 
-//#define DEBUG
 
 extern QString FileName;
 extern int NumberOfLine;

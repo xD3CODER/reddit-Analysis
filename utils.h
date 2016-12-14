@@ -25,18 +25,12 @@ public:
     bool Stop;
     void doDownload();
     void print_msg(QString);
-    void SearchString(QString data);
 
 
 Q_SIGNALS:
     void ramUsage(int);
 
 };
-
-
-
-
-
 
 
 class Downloader : public QThread
@@ -47,7 +41,6 @@ public:
     bool Stop;
     void doDownload(QString);
     void SearchString(QString data);
-
     void writeFile(QString);
     void getRoot();
     QNetworkAccessManager *manager;
