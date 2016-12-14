@@ -305,7 +305,7 @@ void MainWindow::on_pushButton_7_clicked()
      ui->plainTextEdit->insertPlainText("###### Done ######\n");
 }
 
-void MainWindow::onFileWrote(QString name){
+void MainWindow::onFileWrote(){
 
       initValues();
       QMessageBox::StandardButton reply;

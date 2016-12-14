@@ -11,7 +11,7 @@
 #include <QNetworkReply>
 #include <QFile>
 #include <QStringList>
-#define DEBUG 1;
+#define DEBUG 1
 
 
 extern QStringList remoteDataList;
