@@ -42,12 +42,8 @@ public Q_SLOTS:
 
 
 private slots:
-    void on_pushButton_clicked();
-    void on_pushButton_2_clicked();
 
     void on_comboBox_activated(const QString &arg1);
-
-
 
     void on_pushButton_3_clicked();
 
@@ -59,11 +55,9 @@ private slots:
 
     void on_pushButton_7_clicked();
 
-
-
-    void on_comboBox_2_activated(const QString &arg1);
-
     void on_pushButton_9_clicked();
+
+    void on_pushButton_10_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(WORKER_ram,SIGNAL(ramUsage(int)),this,SLOT(onRamUpdate(int)));
     WORKER_ram->start();
 
-    movie = new QMovie("images/loading.gif");
+    movie = new QMovie("images/loader2.gif");
     ui->label_7->setMovie(movie);
     movie->start();
     movie->setPaused(true);
@@ -114,16 +114,7 @@ void MainWindow::onRemotePath(QStringList data)
     WORKER_downloader->terminate();
 }
 
-void MainWindow::on_pushButton_clicked()
-{
 
-
-
-
-
-
-
-}
 void MainWindow::onLoadFinished(bool)
 {
     movie->setPaused(true);
@@ -151,22 +142,6 @@ void MainWindow::onRamUpdate(int usage)
 
 void MainWindow::onFileChanged(float loadedData)
 {
-
-
-
-    /*
-    ui->tableWidget->insertRow(count);
-    ui->tableWidget->setItem(count, 0, new QTableWidgetItem(name["link_id"].toString()));
-    ui->tableWidget->setItem(count, 1, new QTableWidgetItem(name["parent_id"].toString()));
-    ui->tableWidget->setItem(count, 2, new QTableWidgetItem(name["id"].toString()));
-    ui->tableWidget->setItem(count, 3, new QTableWidgetItem(name["name"].toString()));
-    ui->tableWidget->setItem(count, 4, new QTableWidgetItem(name["body"].toString()));
-    */
-
-    //    ui->label_2->setText("Chargé dans la mémoire :" + QString::number(loadedData/1048576, 'f', 4) + " Mo");
-
-
-    // do something..
     nMilliseconds = myTimer.elapsed();
     mos = (loadedData/1048576)/(nMilliseconds*0.001);
     kos = (loadedData/1024)/(nMilliseconds*0.001);
@@ -174,19 +149,8 @@ void MainWindow::onFileChanged(float loadedData)
     ui->label_3->setText("Vitesse de chargement :" + QString::number(mos, 'f', 2) + " Mo/s");
     ui->label_6->setText("Fini dans : " + QDateTime::fromTime_t(quint32(restant/(kos*1024))).toString("mm:ss"));
     ui->progressBar->setValue((loadedData/fileSize)*100);
-
 }
 
-
-void MainWindow::on_pushButton_2_clicked()
-{
-
-
-
-    // Selected file not correct or inexistant
-
-
-}
 
 void MainWindow::loadFile(){
     if (!FileName.endsWith(".json"))
@@ -209,9 +173,6 @@ void MainWindow::loadFile(){
 
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
-    // Change selected file name
-
-
     ui->progressBar->setMaximum(0);
     ui->progressBar->setMinimum(0);
     ui->progressBar->setValue(0);
@@ -241,10 +202,6 @@ void MainWindow::initValues()
     ui->label_6->clear();
     ui->label_3->clear();
     ui->label->clear();
-    ui->tableWidget->setColumnWidth(0, 120);
-    ui->tableWidget->setColumnWidth(1, 120);
-    ui->tableWidget->setColumnWidth(2, 120);
-    ui->tableWidget->setColumnWidth(3, 400);
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -260,86 +217,37 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_pushButton_5_clicked()
 {
-
-
-
-
-    /* SEARCH IN QTABLE
-
-    QString findName = "t3_7ajqp";
-    QAbstractItemModel *modl = ui->tableWidget->model();
-    QSortFilterProxyModel proxy;
-    proxy.setSourceModel(modl);
-    proxy.setFilterKeyColumn(1);
-    proxy.setFilterFixedString(findName);
-    // now the proxy only contains rows that match the name
-    // let's take the first one and map it to the original model
-    for (int i=0; ui->tableWidget->rowCount(); i++)
+    Node *Data = list->head;
+    QVector< QVector< int > > stats = list->getCommentDateStats(Data);
+    for (int i = 0; i<24; i++)
     {
-        QModelIndex matchingIndex = proxy.mapToSource(proxy.index(i,i));
-        if(matchingIndex.isValid()){
-
-            ui->tableWidget->scrollTo(matchingIndex,QAbstractItemView::EnsureVisible);
-            QString data = ui->tableWidget->model()->data(ui->tableWidget->model()->index(matchingIndex.row(),3)).toString();
-          //  QMessageBox::information(this,"Name Search:", data);
-            ui->label_2->setText(data);
-         //   ui->tableWidget->setRowCount(0);
-
-         //   ui->tableWidget->setRowHidden(!matchingIndex.row(), true);
-        } else {
-            //QMessageBox::information(this,"Name Search:", "Match not found!");
-        }
+         debug->print_msg("Posted at "+QString::number(i)+"h : " +QString::number((((int)stats[0][i]))));
     }
-      ui->label_3->setText("finish");
-    proxy.clear();
-
-    */
-
-
-
 }
 
 void MainWindow::on_pushButton_6_clicked()
-{/*
-    QString result;
-    QMessageBox msgBox;
-    Node *temp = list->head;
-    int counter = 0;
-    while (temp!= NULL) {
-        ui->tableWidget->insertRow(counter);
-        ui->tableWidget->setItem(counter, 0, new QTableWidgetItem(temp->data["link_id"].toString()));
-        ui->tableWidget->setItem(counter, 1, new QTableWidgetItem(temp->data["parent_id"].toString()));
-        ui->tableWidget->setItem(counter, 2, new QTableWidgetItem(temp->data["id"].toString()));
-        ui->tableWidget->setItem(counter, 3, new QTableWidgetItem(temp->data["name"].toString()));
-        ui->tableWidget->setItem(counter, 4, new QTableWidgetItem(temp->data["body"].toString()));
-        timestamp = temp->data["created_utc"].toString().toUInt();
-        QDateTime create;
-        ui->tableWidget->setItem(counter, 5, new QTableWidgetItem());
-        ui->tableWidget->setItem(counter, 6, new QTableWidgetItem(temp->data["author"].toString()));
-        counter++;
-        temp = temp->next;
-    }
-    msgBox.setText("Finished");
-    msgBox.exec();
-    */
+{
+    Node *Data = list->head;
+    long int count = list->countNewThreads(Data);
+    debug->print_msg(QString::number(count));
 }
 
 void MainWindow::on_pushButton_7_clicked()
 {
-    Utils Checking;
-    if (ui->radioButton->isChecked())
+     Node *Data = list->head;
+    QVector< QVector< int > > stats = list->getCommentDateStats(Data);
+
+    for (int i = 1; i<32; i++)
     {
-        Checking.SearchString(" "+ui->textEdit->toPlainText()+" ");
+        debug->print_msg("Posted on "+QString::number(i)+" day : " +QString::number((((int)stats[1][i]))));
     }
-    else
-    {
-        Checking.SearchString(ui->textEdit->toPlainText());
-    }
+
+
 }
 
 void MainWindow::onFileWrote(QString name){
 
-     initValues();
+      initValues();
       QMessageBox::StandardButton reply;
       reply = QMessageBox::question(this, "Fichier téléchargé", "Souhaitez-vous charger ce fichier ?",QMessageBox::Yes|QMessageBox::No);
       if (reply == QMessageBox::Yes) {
@@ -349,8 +257,6 @@ void MainWindow::onFileWrote(QString name){
         getLocalPath();
         WORKER_downloader->getRoot();
       }
-
-
 }
 
 
@@ -361,6 +267,7 @@ void MainWindow::on_pushButton_9_clicked()
     int count = 0;
     Node *Data = list->head;
     Users *User = userslist->head;
+
     while(Data != NULL)
     {
         while(User != NULL)
@@ -374,19 +281,19 @@ void MainWindow::on_pushButton_9_clicked()
         }
         if(count == 0)
         {
-            debug->print_msg("->("+ Data->author +" à )");
+
             userslist->addAtFront(Data->author);
-            ui->comboBox_2->addItem(Data->author);
+
         }
         User = userslist->head;
         count = 0;
         Data = Data->next;
     }
-
+     debug->print_msg("Finished");
      userslist->addAtFront(NULL);
 }
 
-void MainWindow::on_comboBox_2_activated(const QString &arg1)
+void MainWindow::on_pushButton_10_clicked()
 {
-    userslist->printList();
+     userslist->printList();
 }

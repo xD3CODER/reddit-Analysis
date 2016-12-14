@@ -12,6 +12,7 @@
 //#define DEBUG
 
 extern QString FileName;
+extern int NumberOfLine;
 
 extern float loadedData;
 class FileCheking : public QThread

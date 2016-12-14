@@ -4,6 +4,7 @@
 #include <list.h>
 #include <utils.h>
 QString FileName;
+int NumberOfLine=0;
 float loadedData;
 void delay(int wait);
 
@@ -35,6 +36,7 @@ void  FileCheking::run()
     Q_EMIT FileSize(strJson2.size());
 
     foreach (const QJsonValue & value, jsonArray) {
+        NumberOfLine++;
         QCoreApplication::processEvents();
         delay(0.1);
         QJsonArray jsonArray2 = value.toArray();

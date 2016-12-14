@@ -3,7 +3,6 @@
 #include <iostream>
 #include <stdlib.h>
 #include <QMessageBox>
-void delay(int);
 
 
 LinkedList::~LinkedList()
@@ -25,7 +24,7 @@ void LinkedList::addAtFront(QJsonObject data)
     temp->parent_id = data["parent_id"].toString();
     quint32 timestamp = data["created_utc"].toString().toUInt();
     QDateTime create;
-    temp->created_date = create.fromTime_t(timestamp).toString("dd/MM/yyyy - hh:mm:ss AP");
+    temp->created_date = create.fromTime_t(timestamp);
     temp->is_edited = data["edited"].toString();
     temp->downs_number = data["downs"].toString().toInt();
     temp->ups_number = (int)data["ups"].toInt();
@@ -52,9 +51,15 @@ void LinkedUsersList::printList()
 
         while(User != NULL)
         {
-            debug->print_msg("->("+ User->user_ID +" à "+QString::number(User->messagecount)+")");
+            debug->print_msg( User->user_ID +" à posté "+QString::number(User->messagecount) +" messages");
             User=User->next;
         }
+}
+
+
+void LinkedList::getUsers()
+{
+
 }
 
 
@@ -73,4 +78,33 @@ void LinkedList::printList()
        msgBox.setText("Finished");
        msgBox.exec();
 
+}
+
+long int LinkedList::countNewThreads(Node *message) {
+     long int count = 0;
+
+    while(message != NULL) {
+
+        if(message->parent_id == message->link_id) {
+            count++;
+        }
+        message = message->next;
+    }
+
+    return count;
+}
+
+QVector< QVector< int > > LinkedList::getCommentDateStats(Node *message) {
+    QVector< QVector< int > > count(2);
+    count[0].resize(25);
+    count[1].resize(32);
+
+    while(message != NULL) {
+        count[1][message->created_date.date().day()]++;
+        count[0][message->created_date.time().hour()]++;
+        message = message->next;
+    }
+
+
+    return count;
 }

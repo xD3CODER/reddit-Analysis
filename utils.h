@@ -27,6 +27,7 @@ public:
     void print_msg(QString);
     void SearchString(QString data);
 
+
 Q_SIGNALS:
     void ramUsage(int);
 

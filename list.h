@@ -7,14 +7,13 @@
 
 struct Node
 {
-    //QJsonObject data;
     Node* next;
     QString comment_id;
     QString link_id;
     QString parent_id;
     QString subreddit;
     QString author;
-    QString created_date;
+    QDateTime created_date;
     QString is_edited;
     int ups_number;
     int downs_number;
@@ -39,14 +38,10 @@ public:
     /** Default destructor */
     virtual ~LinkedUsersList();
     void addAtFront(QString newElement);
-     void printList();
-    int removeTop();
-    int removeBottom();
-    int getTop();
-    int getBottom();
-    int findKey(int keyToFind);
+    void printList();
     Users* head;
     int size;
+
 protected:
 private:
 
@@ -63,14 +58,12 @@ public:
     /** Default destructor */
     virtual ~LinkedList();
     void addAtFront(QJsonObject newElement);
-     void printList();
-    int removeTop();
-    int removeBottom();
-    int getTop();
-    int getBottom();
-    int findKey(int keyToFind);
+    void printList();
     Node* head;
     int size;
+    long int countNewThreads(Node* liste);
+    QVector< QVector< int > > getCommentDateStats(Node* list);
+    void getUsers();
 protected:
 private:
 
