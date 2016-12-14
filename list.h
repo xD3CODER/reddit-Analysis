@@ -41,6 +41,7 @@ public:
     void printList();
     Users* head;
     int size;
+    Users *getUsersPosts(Node *data);
 
 protected:
 private:

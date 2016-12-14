@@ -35,6 +35,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->pushButton_3->setEnabled(false);
+    ui->pushButton_5->setEnabled(false);
+    ui->pushButton_6->setEnabled(false);
+    ui->pushButton_7->setEnabled(false);
+    ui->pushButton_10->setEnabled(false);
     getLocalPath();
     initValues();
     WORKER_ram = new Utils(this);
@@ -121,6 +126,10 @@ void MainWindow::onLoadFinished(bool)
     ui->label_3->setText("Fichier chargé avec succès !");
     WORKER_files->terminate();
     initValues();
+    ui->pushButton_5->setEnabled(true);
+    ui->pushButton_6->setEnabled(true);
+    ui->pushButton_7->setEnabled(true);
+    ui->pushButton_10->setEnabled(true);
 
 }
 void MainWindow::onFileSize(float Size)
@@ -142,6 +151,7 @@ void MainWindow::onRamUpdate(int usage)
 
 void MainWindow::onFileChanged(float loadedData)
 {
+    ui->pushButton_3->setEnabled(true);
     nMilliseconds = myTimer.elapsed();
     mos = (loadedData/1048576)/(nMilliseconds*0.001);
     kos = (loadedData/1024)/(nMilliseconds*0.001);
@@ -153,6 +163,10 @@ void MainWindow::onFileChanged(float loadedData)
 
 
 void MainWindow::loadFile(){
+    ui->pushButton_5->setEnabled(false);
+    ui->pushButton_6->setEnabled(false);
+    ui->pushButton_7->setEnabled(false);
+    ui->pushButton_10->setEnabled(false);
     if (!FileName.endsWith(".json"))
     {
         return;
@@ -169,6 +183,7 @@ void MainWindow::loadFile(){
     connect(WORKER_files,SIGNAL(loadFinished(bool)),this,SLOT(onLoadFinished(bool)));
     // Start thread
     WORKER_files->start();
+
 }
 
 void MainWindow::on_comboBox_activated(const QString &arg1)
@@ -176,6 +191,11 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
     ui->progressBar->setMaximum(0);
     ui->progressBar->setMinimum(0);
     ui->progressBar->setValue(0);
+    ui->pushButton_3->setEnabled(false);
+    ui->pushButton_5->setEnabled(false);
+    ui->pushButton_6->setEnabled(false);
+    ui->pushButton_7->setEnabled(false);
+    ui->pushButton_10->setEnabled(false);
 
     if(ui->comboBox->currentIndex() < indexOfRemote)
     {
@@ -207,6 +227,7 @@ void MainWindow::initValues()
 void MainWindow::on_pushButton_3_clicked()
 {
       WORKER_files->terminate();
+      movie->setPaused(true);
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -217,32 +238,71 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_pushButton_5_clicked()
 {
+    QFile file(FileName.left(FileName.length() - 5)+"-comments-per-hour.report.csv");
+    QTextStream stream(&file);
+     if(ui->checkBox->isChecked()){
+    file.open(QFile::WriteOnly|QFile::Truncate);
+     }
+    ui->plainTextEdit->insertPlainText("\n\n");
+    ui->plainTextEdit->insertPlainText("### Number of comments by hours ###\n");
     Node *Data = list->head;
     QVector< QVector< int > > stats = list->getCommentDateStats(Data);
     for (int i = 0; i<24; i++)
-    {
-         debug->print_msg("Posted at "+QString::number(i)+"h : " +QString::number((((int)stats[0][i]))));
+    { if(ui->checkBox->isChecked()){
+        stream << "Hour "+QString::number(i) << ";" << QString::number((((int)stats[0][i]))) << "\n";
+        }
+        ui->plainTextEdit->insertPlainText("Posted at "+QString::number(i)+"h : " +QString::number((((int)stats[0][i])))+"\n");
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+        debug->print_msg("Posted at "+QString::number(i)+"h : " +QString::number((((int)stats[0][i]))));
     }
+     if(ui->checkBox->isChecked()){
+     file.close();
+     ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
+     }
+     ui->plainTextEdit->insertPlainText("###### Done ######\n");
 }
 
 void MainWindow::on_pushButton_6_clicked()
 {
+    ui->plainTextEdit->insertPlainText("\n\n");
+    ui->plainTextEdit->insertPlainText("### Number of new topics ###\n");
+
     Node *Data = list->head;
     long int count = list->countNewThreads(Data);
-    debug->print_msg(QString::number(count));
+    //debug->print_msg(QString::number(count));
+    ui->plainTextEdit->insertPlainText(QString::number(count)+" new topics in this file\n");
+     ui->plainTextEdit->insertPlainText("###### Done ######\n");
+     ui->plainTextEdit->moveCursor (QTextCursor::End);
 }
 
 void MainWindow::on_pushButton_7_clicked()
 {
+    ui->plainTextEdit->insertPlainText("\n\n");
+    ui->plainTextEdit->insertPlainText("### Number of comments by days ###\n");
      Node *Data = list->head;
     QVector< QVector< int > > stats = list->getCommentDateStats(Data);
 
+    QFile file(FileName.left(FileName.length() - 5)+"-comments-per-day.report.csv");
+    QTextStream stream(&file);
+     if(ui->checkBox->isChecked()){
+    file.open(QFile::WriteOnly|QFile::Truncate);
+     }
+
     for (int i = 1; i<32; i++)
     {
-        debug->print_msg("Posted on "+QString::number(i)+" day : " +QString::number((((int)stats[1][i]))));
+         if(ui->checkBox->isChecked()){
+        stream << "Day "+QString::number(i) << ";" << QString::number((((int)stats[1][i]))) << "\n";
+         }
+         ui->plainTextEdit->insertPlainText("Posted on "+QString::number(i)+" day of this month : " +QString::number((((int)stats[1][i])))+"\n");
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+       // debug->print_msg("Posted on "+QString::number(i)+" day of the month : " +QString::number((((int)stats[1][i]))));
     }
 
-
+     if(ui->checkBox->isChecked()){
+    file.close();
+    ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
+     }
+     ui->plainTextEdit->insertPlainText("###### Done ######\n");
 }
 
 void MainWindow::onFileWrote(QString name){
@@ -262,38 +322,38 @@ void MainWindow::onFileWrote(QString name){
 
 
 
-void MainWindow::on_pushButton_9_clicked()
-{
-    int count = 0;
-    Node *Data = list->head;
-    Users *User = userslist->head;
 
-    while(Data != NULL)
-    {
-        while(User != NULL)
-        {
-            if(User->user_ID == Data->author)
-            {
-                User->messagecount = User->messagecount+1;
-                count++;
-            }
-             User=User->next;
-        }
-        if(count == 0)
-        {
-
-            userslist->addAtFront(Data->author);
-
-        }
-        User = userslist->head;
-        count = 0;
-        Data = Data->next;
-    }
-     debug->print_msg("Finished");
-     userslist->addAtFront(NULL);
-}
 
 void MainWindow::on_pushButton_10_clicked()
 {
-     userslist->printList();
+    QFile file(FileName.left(FileName.length() - 5)+"-comments-per-user.report.csv");
+    QTextStream stream(&file);
+     if(ui->checkBox->isChecked()){
+    file.open(QFile::WriteOnly|QFile::Truncate);
+     }
+        ui->plainTextEdit->insertPlainText("\n\n");
+        ui->plainTextEdit->insertPlainText("### Messages by users ###\n");
+        Node *Liste = list->head;
+        Users *t =  userslist->getUsersPosts(Liste);
+
+        while(t != NULL && t->user_ID != "[deleted]")
+        {
+             if(ui->checkBox->isChecked()){
+             stream << t->user_ID << ";" << QString::number(t->messagecount) << "\n";
+             }
+            ui->plainTextEdit->insertPlainText(t->user_ID +" à posté "+QString::number(t->messagecount) +" messages\n");
+            ui->plainTextEdit->moveCursor (QTextCursor::End);
+           //debug->print_msg( t->user_ID +" à posté "+QString::number(t->messagecount) +" messages");
+            t=t->next;
+        }
+         if(ui->checkBox->isChecked()){
+        file.close();
+        ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
+         }
+        ui->plainTextEdit->insertPlainText("###### Done ######\n");
+}
+
+void MainWindow::on_pushButton_8_clicked()
+{
+    ui->plainTextEdit->clear();
 }

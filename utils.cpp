@@ -117,7 +117,7 @@ void Downloader::getRoot(){
     QNetworkRequest req( QUrl( QString("http://89.234.183.123/reddit/list.php") ) );
     QNetworkReply *reply = mgr.get(req);
     eventLoop.exec();
-    debug->print_msg("Download of index finished");
+    debug->print_msg("Download of remotes indexs finished");
     if (reply->error() == QNetworkReply::NoError) {
         //success
         QByteArray data = reply->readAll();

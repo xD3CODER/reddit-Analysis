@@ -108,3 +108,30 @@ QVector< QVector< int > > LinkedList::getCommentDateStats(Node *message) {
 
     return count;
 }
+
+Users *LinkedUsersList::getUsersPosts(Node *data) {
+    int count = 0;
+    Users *User = userslist->head;
+
+    while(data != NULL)
+    {
+        while(User != NULL)
+        {
+            if(User->user_ID == data->author)
+            {
+                User->messagecount = User->messagecount+1;
+                count++;
+            }
+             User=User->next;
+        }
+        if(count == 0)
+        {
+            userslist->addAtFront(data->author);
+        }
+        User = userslist->head;
+        count = 0;
+        data = data->next;
+    }
+     debug->print_msg("Finished");
+     return userslist->head;
+}
