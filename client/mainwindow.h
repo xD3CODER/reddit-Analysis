@@ -61,10 +61,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-     void getLocalPath(QString directory = QDir::currentPath());
-     void initValues();
-     void loadFile();
-     QMovie *movie;
+    void getLocalPath(QString directory = QDir::currentPath());
+    void initValues();
+    void loadFile();
+    QMovie *movie;
 };
 
 #endif // MAINWINDOW_H

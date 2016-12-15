@@ -16,9 +16,9 @@ FileCheking::FileCheking(QObject *parent) :
 }
 
 
+// On ouvre le fichié séléctionné et on le parse tout en remplissant notre liste chainée
 void  FileCheking::run()
 {
-
 
     QFile file;
     file.setFileName("data/"+FileName);
@@ -50,16 +50,13 @@ void  FileCheking::run()
         list->addAtFront(obj);
         debug->print_msg(obj["name"].toString());
         count++;
-       // this->msleep(1);
-       // delay(1);
+        // this->msleep(1);
+        // delay(1);
     }
 
 
-     Q_EMIT loadFinished(true);
-     settings.clear(); // Release memory
-
-   //
-
+    Q_EMIT loadFinished(true);
+    settings.clear();
 
 }
 

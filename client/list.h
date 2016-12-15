@@ -64,7 +64,6 @@ public:
     int size;
     long int countNewThreads(Node* liste);
     QVector< QVector< int > > getCommentDateStats(Node* list);
-    void getUsers();
 protected:
 private:
 

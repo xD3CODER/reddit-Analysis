@@ -17,8 +17,9 @@
 float fileSize;
 QTime myTimer;
 
-LinkedList* list;
-LinkedUsersList* userslist;
+LinkedList* list; // Liste globale
+LinkedUsersList* userslist; // Liste infos utilisateurs
+
 void delay(int);
 Utils *debug = new Utils();
 int nMilliseconds;
@@ -29,7 +30,7 @@ int indexOfRemote;
 QStringList remoteDataList;
 QStringList localDataList;
 
-
+// Initialisation du GUI
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -67,6 +68,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// Check des données locales et ajout dans le dropbox
 void MainWindow::getLocalPath(QString directory)
 {
     int count=0;
@@ -91,6 +93,7 @@ void MainWindow::getLocalPath(QString directory)
 
 }
 
+// Check des données serveur et ajout dans le dropbox (couleur jaune)
 void MainWindow::onRemotePath(QStringList data)
 {
     int count=0;
@@ -120,6 +123,7 @@ void MainWindow::onRemotePath(QStringList data)
 }
 
 
+// Fichier chargé dans la mémoire on indique que c'est bon et on débloque les boutons
 void MainWindow::onLoadFinished(bool)
 {
     movie->setPaused(true);
@@ -132,6 +136,8 @@ void MainWindow::onLoadFinished(bool)
     ui->pushButton_10->setEnabled(true);
 
 }
+
+// Le worker a renvoyé la taille du fichier séléctionné
 void MainWindow::onFileSize(float Size)
 {
     myTimer.restart();
@@ -141,7 +147,7 @@ void MainWindow::onFileSize(float Size)
     ui->progressBar->setMaximum(100);
 }
 
-
+// On affiche la valeur actuelle de la RAM
 void MainWindow::onRamUpdate(int usage)
 {
     ui->progressBar_2->setValue(usage);
@@ -149,6 +155,7 @@ void MainWindow::onRamUpdate(int usage)
 }
 
 
+// Quand le worker avance dans l'ajout de données, on update les infos dans le footer
 void MainWindow::onFileChanged(float loadedData)
 {
     ui->pushButton_3->setEnabled(true);
@@ -161,7 +168,7 @@ void MainWindow::onFileChanged(float loadedData)
     ui->progressBar->setValue((loadedData/fileSize)*100);
 }
 
-
+// On charge le fichier séléctionné en mémoire (lancement du worker files)
 void MainWindow::loadFile(){
     ui->pushButton_5->setEnabled(false);
     ui->pushButton_6->setEnabled(false);
@@ -186,6 +193,7 @@ void MainWindow::loadFile(){
 
 }
 
+// Item séléctionné, si il est sur le serveur, on le télécharge, sinon on l'ouvre
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
     ui->progressBar->setMaximum(0);
@@ -196,7 +204,7 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
     ui->pushButton_6->setEnabled(false);
     ui->pushButton_7->setEnabled(false);
     ui->pushButton_10->setEnabled(false);
-     FileName = arg1+".json";
+    FileName = arg1+".json";
     if(ui->comboBox->currentIndex() < indexOfRemote)
     {
         ui->label_2->setText("Opening file...");
@@ -212,7 +220,7 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
 
 }
 
-
+// On initialise les différents éléments
 void MainWindow::initValues()
 {
     fileSize = loadedData = 0;
@@ -224,44 +232,48 @@ void MainWindow::initValues()
     ui->label->clear();
 }
 
+// On kill le thread pour stopper le chargement d'un fichier
 void MainWindow::on_pushButton_3_clicked()
 {
-      WORKER_files->terminate();
-      movie->setPaused(true);
+    WORKER_files->terminate();
+    movie->setPaused(true);
 }
 
+// On force le rafraichissement des données locales et serveur
 void MainWindow::on_pushButton_4_clicked()
 {
     getLocalPath();
     WORKER_downloader->getRoot();
 }
 
+// On affiche le nombre de messages par heures
 void MainWindow::on_pushButton_5_clicked()
 {
     QFile file(FileName.left(FileName.length() - 5)+"-comments-per-hour.report.csv");
     QTextStream stream(&file);
-     if(ui->checkBox->isChecked()){
-    file.open(QFile::WriteOnly|QFile::Truncate);
-     }
+    if(ui->checkBox->isChecked()){
+        file.open(QFile::WriteOnly|QFile::Truncate);
+    }
     ui->plainTextEdit->insertPlainText("\n\n");
     ui->plainTextEdit->insertPlainText("### Number of comments by hours ###\n");
     Node *Data = list->head;
     QVector< QVector< int > > stats = list->getCommentDateStats(Data);
     for (int i = 0; i<24; i++)
     { if(ui->checkBox->isChecked()){
-        stream << "Hour "+QString::number(i) << ";" << QString::number((((int)stats[0][i]))) << "\n";
+            stream << "Hour "+QString::number(i) << ";" << QString::number((((int)stats[0][i]))) << "\n";
         }
         ui->plainTextEdit->insertPlainText("Posted at "+QString::number(i)+"h : " +QString::number((((int)stats[0][i])))+"\n");
         ui->plainTextEdit->moveCursor (QTextCursor::End);
         debug->print_msg("Posted at "+QString::number(i)+"h : " +QString::number((((int)stats[0][i]))));
     }
-     if(ui->checkBox->isChecked()){
-     file.close();
-     ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
-     }
-     ui->plainTextEdit->insertPlainText("###### Done ######\n");
+    if(ui->checkBox->isChecked()){
+        file.close();
+        ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
+    }
+    ui->plainTextEdit->insertPlainText("###### Done ######\n");
 }
 
+// On affiche le nombre de nouveaux topics
 void MainWindow::on_pushButton_6_clicked()
 {
     ui->plainTextEdit->insertPlainText("\n\n");
@@ -271,85 +283,90 @@ void MainWindow::on_pushButton_6_clicked()
     long int count = list->countNewThreads(Data);
     //debug->print_msg(QString::number(count));
     ui->plainTextEdit->insertPlainText(QString::number(count)+" new topics in this file\n");
-     ui->plainTextEdit->insertPlainText("###### Done ######\n");
-     ui->plainTextEdit->moveCursor (QTextCursor::End);
+    ui->plainTextEdit->insertPlainText("###### Done ######\n");
+    ui->plainTextEdit->moveCursor (QTextCursor::End);
 }
 
+// On affiche le nombre de messages par jour
 void MainWindow::on_pushButton_7_clicked()
 {
     ui->plainTextEdit->insertPlainText("\n\n");
     ui->plainTextEdit->insertPlainText("### Number of comments by days ###\n");
-     Node *Data = list->head;
+    Node *Data = list->head;
     QVector< QVector< int > > stats = list->getCommentDateStats(Data);
 
     QFile file(FileName.left(FileName.length() - 5)+"-comments-per-day.report.csv");
     QTextStream stream(&file);
-     if(ui->checkBox->isChecked()){
-    file.open(QFile::WriteOnly|QFile::Truncate);
-     }
+    if(ui->checkBox->isChecked()){
+        file.open(QFile::WriteOnly|QFile::Truncate);
+    }
 
     for (int i = 1; i<32; i++)
     {
-         if(ui->checkBox->isChecked()){
-        stream << "Day "+QString::number(i) << ";" << QString::number((((int)stats[1][i]))) << "\n";
-         }
-         ui->plainTextEdit->insertPlainText("Posted on "+QString::number(i)+" day of this month : " +QString::number((((int)stats[1][i])))+"\n");
+        if(ui->checkBox->isChecked()){
+            stream << "Day "+QString::number(i) << ";" << QString::number((((int)stats[1][i]))) << "\n";
+        }
+        ui->plainTextEdit->insertPlainText("Posted on "+QString::number(i)+" day of this month : " +QString::number((((int)stats[1][i])))+"\n");
         ui->plainTextEdit->moveCursor (QTextCursor::End);
-       // debug->print_msg("Posted on "+QString::number(i)+" day of the month : " +QString::number((((int)stats[1][i]))));
+        // debug->print_msg("Posted on "+QString::number(i)+" day of the month : " +QString::number((((int)stats[1][i]))));
     }
 
-     if(ui->checkBox->isChecked()){
-    file.close();
-    ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
-     }
-     ui->plainTextEdit->insertPlainText("###### Done ######\n");
+    if(ui->checkBox->isChecked()){
+        file.close();
+        ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
+    }
+    ui->plainTextEdit->insertPlainText("###### Done ######\n");
 }
 
-void MainWindow::onFileWrote(QString file){
-
-      ui->label_2->setText(file+ " Downloaded");
-      QMessageBox::StandardButton reply;
-      reply = QMessageBox::question(this, "File downloaded", "Do you want to open it ?",QMessageBox::Yes|QMessageBox::No);
-      if (reply == QMessageBox::Yes) {
-        loadFile();
-        WORKER_downloader->terminate();
-      } else {
-        getLocalPath();
-        WORKER_downloader->getRoot();
-      }
-}
-
-
-
+// On check le nombre de messages par utilisateur
 void MainWindow::on_pushButton_10_clicked()
 {
     QFile file(FileName.left(FileName.length() - 5)+"-comments-per-user.report.csv");
     QTextStream stream(&file);
-     if(ui->checkBox->isChecked()){
-    file.open(QFile::WriteOnly|QFile::Truncate);
-     }
-        ui->plainTextEdit->insertPlainText("\n\n");
-        ui->plainTextEdit->insertPlainText("### Messages by users ###\n");
-        Node *Liste = list->head;
-        Users *t =  userslist->getUsersPosts(Liste);
+    if(ui->checkBox->isChecked()){
+        file.open(QFile::WriteOnly|QFile::Truncate);
+    }
+    ui->plainTextEdit->insertPlainText("\n\n");
+    ui->plainTextEdit->insertPlainText("### Messages by users ###\n");
+    Node *Liste = list->head;
+    Users *t =  userslist->getUsersPosts(Liste);
 
-        while(t != NULL && t->user_ID != "[deleted]")
-        {
-             if(ui->checkBox->isChecked()){
-             stream << t->user_ID << ";" << QString::number(t->messagecount) << "\n";
-             }
-            ui->plainTextEdit->insertPlainText(t->user_ID +" posted "+QString::number(t->messagecount) +" messages\n");
-            ui->plainTextEdit->moveCursor (QTextCursor::End);
-           //debug->print_msg( t->user_ID +" à posté "+QString::number(t->messagecount) +" messages");
-            t=t->next;
+    while(t != NULL && t->user_ID != "[deleted]")
+    {
+        if(ui->checkBox->isChecked()){
+            stream << t->user_ID << ";" << QString::number(t->messagecount) << "\n";
         }
-         if(ui->checkBox->isChecked()){
+        ui->plainTextEdit->insertPlainText(t->user_ID +" posted "+QString::number(t->messagecount) +" messages\n");
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+        //debug->print_msg( t->user_ID +" à posté "+QString::number(t->messagecount) +" messages");
+        t=t->next;
+    }
+    if(ui->checkBox->isChecked()){
         file.close();
         ui->plainTextEdit->insertPlainText("###### Report generated ######\n");
-         }
-        ui->plainTextEdit->insertPlainText("###### Done ######\n");
+    }
+    ui->plainTextEdit->insertPlainText("###### Done ######\n");
 }
 
+// Le fichier a bien été téléchargé soit on l'ouvre soit on raffraichi les données
+void MainWindow::onFileWrote(QString file){
+
+    ui->label_2->setText(file+ " Downloaded");
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "File downloaded", "Do you want to open it ?",QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        loadFile();
+        WORKER_downloader->terminate();
+    } else {
+        getLocalPath();
+        WORKER_downloader->getRoot();
+    }
+}
+
+
+
+
+// On vide la console debug
 void MainWindow::on_pushButton_8_clicked()
 {
     ui->plainTextEdit->clear();

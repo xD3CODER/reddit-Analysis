@@ -47,8 +47,8 @@ public:
     QNetworkReply *reply;
     QFile *file;
 Q_SIGNALS:
-void writingFile(QString);
-void gotRoot(QStringList);
+    void writingFile(QString);
+    void gotRoot(QStringList);
 };
 
 extern Utils *debug;

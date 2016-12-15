@@ -14,6 +14,7 @@ LinkedUsersList::~LinkedUsersList()
 
 }
 
+// Ajout de données au bout de liste
 void LinkedList::addAtFront(QJsonObject data)
 {
 
@@ -34,7 +35,7 @@ void LinkedList::addAtFront(QJsonObject data)
     ++size;
 }
 
-
+// Ajout de données au bout de liste
 void LinkedUsersList::addAtFront(QString username)
 {
     Users *temp = new Users();
@@ -45,38 +46,34 @@ void LinkedUsersList::addAtFront(QString username)
     ++size;
 }
 
+// Affichage de la liste (utile en debug)
 void LinkedUsersList::printList()
 {
     Users *User = userslist->head;
 
-        while(User != NULL)
-        {
-            debug->print_msg( User->user_ID +" à posté "+QString::number(User->messagecount) +" messages");
-            User=User->next;
-        }
+    while(User != NULL)
+    {
+        debug->print_msg( User->user_ID +" à posté "+QString::number(User->messagecount) +" messages");
+        User=User->next;
+    }
 }
 
-
-void LinkedList::getUsers()
-{
-
-}
-
-
+// Affichage de la liste (utile en debug)
 void LinkedList::printList()
 {
-       QString result;
-       Node *temp = head;
-       while (temp->next != NULL) {
-           result.append("->("+ temp->comment_id +")");
-           temp = temp->next;
-       }
-       debug->print_msg("Finished");
+    QString result;
+    Node *temp = head;
+    while (temp->next != NULL) {
+        result.append("->("+ temp->comment_id +")");
+        temp = temp->next;
+    }
+    debug->print_msg("Finished");
 
 }
 
+// Comptage des nouveau topics
 long int LinkedList::countNewThreads(Node *message) {
-     long int count = 0;
+    long int count = 0;
 
     while(message != NULL) {
 
@@ -88,6 +85,7 @@ long int LinkedList::countNewThreads(Node *message) {
 
     return count;
 }
+
 
 QVector< QVector< int > > LinkedList::getCommentDateStats(Node *message) {
     QVector< QVector< int > > count(2);
@@ -117,7 +115,7 @@ Users *LinkedUsersList::getUsersPosts(Node *data) {
                 User->messagecount = User->messagecount+1;
                 count++;
             }
-             User=User->next;
+            User=User->next;
         }
         if(count == 0)
         {
@@ -127,6 +125,6 @@ Users *LinkedUsersList::getUsersPosts(Node *data) {
         count = 0;
         data = data->next;
     }
-     debug->print_msg("Finished");
-     return userslist->head;
+    debug->print_msg("Finished");
+    return userslist->head;
 }

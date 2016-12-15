@@ -7,6 +7,7 @@
 #include <list.h>
 #include <QMessageBox>
 
+// Fonction de delay au sein de l'application
 void delay( int millisecondsToWait )
 {
     QTime dieTime = QTime::currentTime().addMSecs(millisecondsToWait );
@@ -31,7 +32,7 @@ Utils::Utils(QObject *parent) :
 }
 
 
-
+// On regarde la valeur de la ram et on l'envoi au GUI toutes les secondes
 void Utils::run(){
 
     while(Utils::isRunning())
@@ -54,6 +55,7 @@ Downloader::Downloader(QObject *parent) :
     manager->deleteLater();
 }
 
+// On télécharge le fichier depuis le serveur
 void Downloader::doDownload(QString filename){
     QEventLoop eventLoop;
     QString outputFilename = "data/"+filename;
@@ -86,6 +88,7 @@ void Downloader::doDownload(QString filename){
     }
 }
 
+// On récupere tous les noms de fichiers présents sur le serveur
 void Downloader::getRoot(){
 
     QEventLoop eventLoop;
@@ -101,13 +104,13 @@ void Downloader::getRoot(){
         QString DataAsString = QString::fromUtf8(data.toStdString().c_str()).simplified();
         QStringList remoteDataList = DataAsString.split(";");
         debug->print_msg("Remote files");
-         debug->print_msg("-----------------------");
+        debug->print_msg("-----------------------");
         for (int i = 0; i < remoteDataList.size(); ++i){
             debug->print_msg(remoteDataList.at(i));
         }
         Q_EMIT gotRoot(remoteDataList);
         delete reply;
-         debug->print_msg("-----------------------");
+        debug->print_msg("-----------------------");
     }
     else
     {
