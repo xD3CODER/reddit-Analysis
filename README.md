@@ -35,12 +35,3 @@ Après l'installation de QtCreator, après ouverture du projet et la première c
 
 ### Utilisation
 Un manuel d'utilisation est disponible dans le fichier `USER_MANUAL.md`
-
-### Graphique
-Nous avons d'après les résultats de notre programme, et sa fonction "export", construit les deux graphiques suivants sur le mois de Mai 2008.
-
-![Commentaires par jours du mois](https://github.com/xD3VHAX/reddit-Analysis/blob/master/graphs/comments-per-days_05-2008.png)
-![Commentaires par heures](https://github.com/xD3VHAX/reddit-Analysis/blob/master/graphs/comments-per-hours_05-2008.png)
-
-Les différents creux sur le premier graphique sont situés au niveau des week-ends du mois de Mai 2008 : il y a donc moins de message en week-end.
-Sur le second graphique, en prenant en compte que les heures sont au format UTC et que les utilisateurs proviennent principalement d'Amérique Centrale, on distingue une baisse d'activité la nuit.
