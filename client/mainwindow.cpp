@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(WORKER_ram,SIGNAL(ramUsage(int)),this,SLOT(onRamUpdate(int)));
     WORKER_ram->start();
 
-    movie = new QMovie("images/loader2.gif");
+    movie = new QMovie("images/loading.gif");
     ui->label_7->setMovie(movie);
     movie->start();
     movie->setPaused(true);
@@ -196,11 +196,10 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
     ui->pushButton_6->setEnabled(false);
     ui->pushButton_7->setEnabled(false);
     ui->pushButton_10->setEnabled(false);
-
+     FileName = arg1+".json";
     if(ui->comboBox->currentIndex() < indexOfRemote)
     {
         ui->label_2->setText("Opening file...");
-        FileName = arg1+".json";
         loadFile();
     }
     else
@@ -214,11 +213,12 @@ void MainWindow::on_comboBox_activated(const QString &arg1)
 }
 
 
-
 void MainWindow::initValues()
 {
     fileSize = loadedData = 0;
     ui->progressBar->setValue(0);
+    ui->progressBar->setMaximum(100);
+    ui->progressBar->setMinimum(0);
     ui->label_6->clear();
     ui->label_3->clear();
     ui->label->clear();
@@ -305,9 +305,9 @@ void MainWindow::on_pushButton_7_clicked()
      ui->plainTextEdit->insertPlainText("###### Done ######\n");
 }
 
-void MainWindow::onFileWrote(){
+void MainWindow::onFileWrote(QString file){
 
-      initValues();
+      ui->label_2->setText(file+ " Downloaded");
       QMessageBox::StandardButton reply;
       reply = QMessageBox::question(this, "File downloaded", "Do you want to open it ?",QMessageBox::Yes|QMessageBox::No);
       if (reply == QMessageBox::Yes) {

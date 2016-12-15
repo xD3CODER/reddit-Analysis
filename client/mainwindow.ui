@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1126</width>
-    <height>574</height>
+    <height>563</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -49,7 +49,7 @@ QMainWindow {background: 'white';}</string>
       <x>10</x>
       <y>510</y>
       <width>1111</width>
-      <height>137</height>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0">

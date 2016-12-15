@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Boum
 TEMPLATE = app
 
- RC_FILE = myapp.rc
+RC_FILE = myapp.rc
 SOURCES += main.cpp\
         mainwindow.cpp \
     filecheking.cpp \

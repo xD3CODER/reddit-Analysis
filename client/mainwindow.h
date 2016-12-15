@@ -36,7 +36,7 @@ public Q_SLOTS:
     void onFileChanged(float);
     void onFileSize(float);
     void onRamUpdate(int);
-    void onFileWrote();
+    void onFileWrote(QString);
     void onRemotePath(QStringList);
 
 
