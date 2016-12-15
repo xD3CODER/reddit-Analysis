@@ -1,4 +1,5 @@
 # reddit-Analysis
+![Commentaires par jours du mois](http://dl.hiapphere.com/data/icon/201508/HiAppHere_com_com.andrewshu.android.reddit.png)
 
 ## Introduction
 L’équipe est composée de 5 membres :
