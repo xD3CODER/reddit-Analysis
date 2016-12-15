@@ -14,7 +14,7 @@ Celui-ci est découpé en deux parties :
 * Une partie "serveur", dévelopée en Python, qui permet de convertir et nettoyer les données récupérées sur différents torrents, situé dans le répertoire `/server`
 * Une partie "cliente", développée en C++, qui effectue les statistiques à partir des fichiers JSON ainsi nettoyés. (répertoire `client`)
 
-Ces deux parties sont indépendantes.
+Ces deux parties sont indépendantes et il n'est pas nécessaire d'avoir la partie serveur d'installée pour utiliser le programme principal en C++.
 
 ## Mirroir HTTP
 L'application cliente peut récupérer des fichiers précedemment nettoyés par nos soins sur un mirroir. Ce mirroir est disponible à l'adresse suivante : http://89.234.183.123/reddit.
@@ -35,3 +35,12 @@ Après l'installation de QtCreator, après ouverture du projet et la première c
 
 ### Utilisation
 Un manuel d'utilisation est disponible dans le fichier `USER_MANUAL.md`
+
+### Graphique
+Nous avons d'après les résultats de notre programme, et sa fonction "export", construit les deux graphiques suivants sur le mois de Mai 2008.
+
+![Commentaires par jours du mois](https://github.com/xD3VHAX/reddit-Analysis/blob/master/graphs/comments-per-days_05-2008.png)
+![Commentaires par heures](https://github.com/xD3VHAX/reddit-Analysis/blob/master/graphs/comments-per-hours_05-2008.png)
+
+Les différents creux sur le premier graphique sont situés au niveau des week-ends du mois de Mai 2008 : il y a donc moins de message en week-end. Sur le second graphique, en prenant en compte que les 
+heures sont au format UTC et que les utilisateurs proviennent principalement d'Amérique Centrale, on distingue une baisse d'activité la nuit.
