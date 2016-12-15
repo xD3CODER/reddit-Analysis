@@ -37,7 +37,7 @@ Après l'installation de QtCreator, après ouverture du projet et la première c
 ### Utilisation
 Un manuel d'utilisation est disponible dans le fichier `USER_MANUAL.md`
 
-### Graphique
+## Graphiques
 Nous avons d'après les résultats de notre programme, et sa fonction "export", construit les deux graphiques suivants sur le mois de Mai 2008.
 
 ![Commentaires par jours du mois](https://github.com/xD3VHAX/reddit-Analysis/blob/master/graphs/comments-per-days_05-2008.png)
@@ -45,3 +45,14 @@ Nous avons d'après les résultats de notre programme, et sa fonction "export", 
 
 Les différents creux sur le premier graphique sont situés au niveau des week-ends du mois de Mai 2008 : il y a donc moins de message en week-end. Sur le second graphique, en prenant en compte que les 
 heures sont au format UTC et que les utilisateurs proviennent principalement d'Amérique Centrale, on distingue une baisse d'activité la nuit.
+
+## Fichiers principaux de l'application client
+Pour des raisons organisationnelles évidentes, nous avons séparé notre code en plusieurs fichiers :
+
+* `*.h` : Fichiers header contenant les prototypes, définitions de listes ...
+* `downloadmanager.cpp` : Fonctions permettant de démarrer un téléchargement et enregistrer un fichier,
+* `filechecing.cpp` : Chargement des fichiers JSON en mémoire,
+* `list.cpp` : Fonctions de traitement sur les listes de messages,
+* `main.cpp` : Programme principal (instancie une application Qt),
+* `mainwindow.cpp` : Fonctions liées à l'UI (callbacks lors de l'appui d'un bouton par exemple),
+* `utils.cpp` : Regroupement des différents helpers de l'application.
