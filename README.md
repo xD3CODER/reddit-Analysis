@@ -5,7 +5,7 @@
 L’équipe est composée de 5 membres :
 * Nathan KREMER [@xD3VHAX](https://github.com/xD3VHAX),
 * Thomas CARDONNE [@SmurfyFR](https://github.com/SmurfyFR),
-* Sabri M’BARKI,
+* Sabri M’BARKI [@sabrimbk](https://github.com/sabrimbk)
 * Marius DAUPHIN,
 * Rayan BOUSLAMA.
 
